@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cc92d91d-36db-4803-8c12-308822939227" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/Final Exam/commonFileFunctions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/Final Exam/exampleText.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/Final Exam/finalExamGUI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/Python Final Test.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/commonReadingFunctions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/pickles-bph0209l238132.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/pickles.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/pickles2.dat.bak" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/pickles2.dat.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/pickles2.dat.dir" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/picklingprogram.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/player.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/playerStats.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Exam/testfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Misc/sendingMessages.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Tic Tac Toe.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Tic Tac Toe/art.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Tic Tac Toe/commonGameFunctions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/Tic Tac Toe/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/date time/gui2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame template/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame template/pgames.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame template/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/assets/background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/assets/enemy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/assets/player.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/assets/treasure.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/enemy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/gameObject.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/pgames.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/player.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/settings-bph0209l238132.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/pygame/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/slimeCrossing.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Module 2/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../GUI development/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Pizza Order/pizzaOrder" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../About Me/Seth Resume.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../About Me/Seth Resume.docx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="26Qvl2zlNPoKFhQaAyiO9mP9FTK" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Pygame Template" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cc92d91d-36db-4803-8c12-308822939227" name="Changes" comment="" />
+      <created>1647368772659</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647368772659</updated>
+    </task>
+    <servers />
+  </component>
+</project>
