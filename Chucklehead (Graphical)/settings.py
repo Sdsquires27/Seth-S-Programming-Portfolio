@@ -4,6 +4,7 @@ import random
 # set up asset folders
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
+cardFolder = os.path.join(imgFolder, "Cards")
 
 WIDTH = 1500
 HEIGHT = 1000
