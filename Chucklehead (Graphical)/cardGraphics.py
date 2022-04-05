@@ -16,9 +16,19 @@ class Card(pygame.sprite.Sprite):
         self.image = self.front
         self.rect = self.image.get_rect()
         self.selected = False
-        self.defaultPos = (x, y)
+        self.faceUp = True
+        self.x = x
+        self.y = y
+        self.defaultPos = (self.x, self.y)
 
     def update(self):
+        if self.faceUp:
+            self.image = self.front
+        else:
+            self.image = self.back
+
+
+        self.defaultPos = (self.x, self.y)
         if self.selected:
             self.rect.center = pygame.mouse.get_pos()
         else:
@@ -38,6 +48,11 @@ class Deck(h.Deck):
         super(Deck, self).__init__()
         self.sprites = sprites
 
+    def update(self):
+        for card in self.cards:
+            card.x = WIDTH/2
+            card.y = HEIGHT/2
+            card.faceUp = False
 
     def createDeck(self):
         j = 0
@@ -50,8 +65,27 @@ class Deck(h.Deck):
                 self.addCard(card)
 
 class Player(ch.Player):
-    def __init__(self, name, pos, rot):
+    def __init__(self, name, x, y, rot):
         super(Player, self).__init__(name)
+        self.x = x
+        self.y = y
+        self.rot = rot
+
+    def update(self):
+        for i in range(len(self.hand.cards)):
+            card = self.hand.cards[i]
+            card.x = self.x + i * 75
+            card.y = self.y
+
+        for i in range(len(self.downCards.cards)):
+            card = self.downCards.cards[i]
+            card.x = self.x + i * 100
+            card.y = self.y -100
+
+        for i in range(len(self.upCards.cards)):
+            card = self.upCards.cards[i]
+            card.x = self.x + i * 100
+            card.y = self.y -100
 
 
 

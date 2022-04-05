@@ -7,7 +7,7 @@ imgFolder = os.path.join(gameFolder, "img")
 cardFolder = os.path.join(imgFolder, "Cards")
 
 WIDTH = 1500
-HEIGHT = 1000
+HEIGHT = 800
 FPS = 30
 
 # define colors

@@ -21,6 +21,7 @@ pygame.display.set_caption("Chucklehead")
 clock = pygame.time.Clock()
 
 allSprites = pygame.sprite.Group()
+players = pygame.sprite.Group()
 cards = pygame.sprite.Group()
 
 cardImages = {}
@@ -49,6 +50,7 @@ for i in range(13):
 # create deck
 deck = cg.Deck(cardImages)
 deck.createDeck()
+deck.shuffle()
 
 # make cards appear
 for card in deck.cards:
@@ -65,11 +67,12 @@ hands = []
 players = 4
 for i in range(players):
     # Name is set simply to the player number. change this later.
-    x = cg.Player(str.format("Player {}", i+1), 0, 0)
+    x = cg.Player(str.format("Player {}", i+1), (i) * 400, HEIGHT - 200, 0)
     downDecks.append(x.downCards)
     upDecks.append(x.upCards)
     hands.append(x.hand)
     playerList.append(x)
+
 
 deck.deal(downDecks, 3)
 deck.deal(upDecks, 3)
@@ -94,6 +97,9 @@ while running:
 
     # Update
     allSprites.update()
+    for player in playerList:
+        player.update()
+        deck.update()
 
     # Draw / render
     screen.fill(BLACK)
