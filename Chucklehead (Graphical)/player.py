@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 
-
+# for an animated player, not used in this project.
 class Player(pygame.sprite.Sprite):
     def __init__(self, sprite):
         super(Player, self).__init__()

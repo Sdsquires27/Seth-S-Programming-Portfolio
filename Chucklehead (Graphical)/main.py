@@ -21,10 +21,19 @@ pygame.display.set_caption("Chucklehead")
 clock = pygame.time.Clock()
 
 allSprites = pygame.sprite.Group()
-players = pygame.sprite.Group()
 cards = pygame.sprite.Group()
+selectedCard = pygame.sprite.Group()
+topDeck = pygame.sprite.Group()
 
 cardImages = {}
+
+# initialize the background image
+background = pygame.image.load(os.path.join(imgFolder, "card table.png"))
+background_rect = background.get_rect()
+
+# initialize the playable space image
+playSpot = pygame.image.load(os.path.join(cardFolder, "Play Here.jfif"))
+
 # initialize the deck images
 cardImages["Back"] = pygame.image.load(os.path.join(cardFolder, "Back.jfif"))
 cardImages["Hearts"] = []
@@ -47,8 +56,12 @@ for i in range(13):
 
 # set up game
 
+# make play spot
+playSpot = cg.playSpot(playSpot, WIDTH / 2 - 200, HEIGHT / 3, topDeck)
+allSprites.add(playSpot)
+
 # create deck
-deck = cg.Deck(cardImages)
+deck = cg.Deck(cardImages, playSpot, selectedCard)
 deck.createDeck()
 deck.shuffle()
 
@@ -56,7 +69,6 @@ deck.shuffle()
 for card in deck.cards:
     allSprites.add(card)
     cards.add(card)
-deck.cards[len(deck.cards) - 1].selectable = True
 
 # create players
 playerList = []
@@ -67,10 +79,13 @@ hands = []
 players = 4
 for i in range(players):
     # Name is set simply to the player number. change this later.
-    x = cg.Player(str.format("Player {}", i+1), (i) * 400, HEIGHT - 200, 0)
+    x = cg.Player(str.format("Player {}", i+1), (i + 1) * 400 - 300, HEIGHT - 200, 0)
+
+    # add the player's three different decks to a list of the decks.
     downDecks.append(x.downCards)
     upDecks.append(x.upCards)
     hands.append(x.hand)
+
     playerList.append(x)
 
 
@@ -78,11 +93,14 @@ deck.deal(downDecks, 3)
 deck.deal(upDecks, 3)
 deck.deal(hands, 3)
 
+curTurn = 0
 
-
+def newTurn():
+    playerList[curTurn].curTurn = True
 
 # Game loop
 running = True
+newTurn()
 while running:
     # keep loop running at the right speed
     clock.tick(FPS)
@@ -94,16 +112,19 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             for card in cards:
                 card.click()
-
     # Update
     allSprites.update()
     for player in playerList:
         player.update()
         deck.update()
 
+
     # Draw / render
     screen.fill(BLACK)
+    screen.blit(background, background_rect)
     allSprites.draw(screen)
+    topDeck.draw(screen)
+    selectedCard.draw(screen)
     # *after* drawing everything, flip the display
     pygame.display.flip()
 

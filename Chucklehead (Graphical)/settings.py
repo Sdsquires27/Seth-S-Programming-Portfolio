@@ -6,7 +6,7 @@ gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
 cardFolder = os.path.join(imgFolder, "Cards")
 
-WIDTH = 1500
+WIDTH = 1600
 HEIGHT = 800
 FPS = 30
 
