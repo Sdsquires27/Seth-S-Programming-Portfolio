@@ -57,7 +57,7 @@ for i in range(13):
 # set up game
 
 # make play spot
-playSpot = cg.playSpot(playSpot, WIDTH / 2 - 200, HEIGHT / 3, topDeck)
+playSpot = cg.playSpot(playSpot, WIDTH / 2 - 100, HEIGHT / 6, topDeck)
 allSprites.add(playSpot)
 
 # create deck
@@ -79,7 +79,7 @@ hands = []
 players = 4
 for i in range(players):
     # Name is set simply to the player number. change this later.
-    x = cg.Player(str.format("Player {}", i+1), (i + 1) * 400 - 300, HEIGHT - 200, 0)
+    x = cg.Player(str.format("Player {}", i+1), (i + 1) * 400 - 300, HEIGHT - 300, 0)
 
     # add the player's three different decks to a list of the decks.
     downDecks.append(x.downCards)
@@ -98,6 +98,7 @@ curTurn = 0
 def newTurn():
     playerList[curTurn].curTurn = True
 
+
 # Game loop
 running = True
 newTurn()
@@ -113,11 +114,20 @@ while running:
             for card in cards:
                 card.click()
     # Update
+    # if the turn has moved on
+    if playSpot.curTurn != curTurn:
+        print("Next turn")
+        playerList[curTurn].curTurn = False
+        if deck.cards and playerList[curTurn].hand.cards:
+           deck.giveCard(deck.cards[0], playerList[curTurn].hand)
+        curTurn = playSpot.curTurn
+        playerList[curTurn].curTurn = True
+
+
     allSprites.update()
     for player in playerList:
         player.update()
         deck.update()
-
 
     # Draw / render
     screen.fill(BLACK)

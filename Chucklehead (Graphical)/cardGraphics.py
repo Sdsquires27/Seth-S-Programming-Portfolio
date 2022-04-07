@@ -3,6 +3,12 @@ import hands as h
 import chuckleClasses as ch
 from settings import *
 
+class GraphicalHand(ch.ChuckleHand):
+    def giveCard(self, card, other_hand):
+        self.cards.remove(card)
+        card.owner = other_hand
+        other_hand.addCard(card)
+
 class Card(pygame.sprite.Sprite):
 
     RANK = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -78,9 +84,14 @@ class Deck(h.Deck):
     def update(self):
         for i in range(len(self.cards)):
             card = self.cards[i]
-            card.x = WIDTH/2 + i
-            card.y = HEIGHT/3
+            card.x = WIDTH/2 + 100 + i
+            card.y = HEIGHT/6
             card.faceUp = False
+
+    def giveCard(self, card, other_hand):
+        self.cards.remove(card)
+        card.owner = other_hand
+        other_hand.addCard(card)
 
     def deal(self, hands_list, perHand=1):
         for i in range(perHand):
@@ -100,6 +111,9 @@ class Deck(h.Deck):
 class Player(ch.Player):
     def __init__(self, name, x, y, rot):
         super(Player, self).__init__(name)
+        self.upCards = GraphicalHand()
+        self.downCards = GraphicalHand()
+        self.hand = GraphicalHand()
         self.x = x
         self.y = y
         self.rot = rot
@@ -116,6 +130,7 @@ class Player(ch.Player):
                 card.hide()
                 card.selectable = False
             else:
+                card.show()
                 card.selectable = True
 
 
@@ -148,16 +163,19 @@ class playSpot(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
         self.discard = ch.ChuckleHand()
+        self.curTurn = 0
+        self.turnOver = False
 
 
 
     def tryPlayCard(self, card):
 
+        self.turnOver = False
         # if no cards, play card
         if not self.discard.cards:
             self.playCard(card)
 
-        # if card, check that card is higher or equal than previous card (or lower if seven)
+        # if cards, check that card is higher or equal than previous card (or lower if seven)
         else:
             topCard = self.discard.cards[len(self.discard.cards) - 1]
 
@@ -182,18 +200,25 @@ class playSpot(pygame.sprite.Sprite):
             if topCards[0] == topCards[1] == topCards[2] == topCards[3]:
                 self.clearCards()
 
-
-        # if top card is a ten
-        if card.value == 9:
+        # if top card is a ten, clear pile
+        if self.discard.cards[len(self.discard.cards) - 1].value == 9:
             print("Destroy cards")
             self.clearCards()
 
         # next turn
+        if self.turnOver:
+            self.curTurn += 1
+            print("Next turn")
+            if self.curTurn > 3:
+                self.curTurn = 0
+
 
 
     def clearCards(self):
         for card in self.discard.cards:
             card.kill()
+
+        self.discard.cards.clear()
 
 
     def playCard(self, card):
@@ -203,3 +228,4 @@ class playSpot(pygame.sprite.Sprite):
         card.selectable = False
         self.topDeck.empty()
         self.topDeck.add(card)
+        self.turnOver = True
