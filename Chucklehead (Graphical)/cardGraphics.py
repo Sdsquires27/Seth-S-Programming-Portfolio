@@ -4,10 +4,16 @@ import chuckleClasses as ch
 from settings import *
 
 class GraphicalHand(ch.ChuckleHand):
+    def __init__(self, type):
+        super(GraphicalHand, self).__init__()
+        self.type = type
+
+
     def giveCard(self, card, other_hand):
         self.cards.remove(card)
         card.owner = other_hand
         other_hand.addCard(card)
+
 
 class Card(pygame.sprite.Sprite):
 
@@ -37,6 +43,7 @@ class Card(pygame.sprite.Sprite):
         self.playSpot = playSpot
         self.playRect = playSpot.rect
         self.defaultPos = (self.x, self.y)
+        self.multiCards = []
 
     def hide(self):
         self.faceUp = False
@@ -54,23 +61,55 @@ class Card(pygame.sprite.Sprite):
         self.defaultPos = (self.x, self.y)
         if self.selected:
             self.rect.center = pygame.mouse.get_pos()
+            if self.multiCards:
+                for card in self.multiCards:
+                    card.defaultPos = (self.x, self.y)
+                    self.rect.right += 75
+
         else:
             self.rect.center = self.defaultPos
 
-    def click(self):
+    def click(self, cards):
         if self.selectable:
 
             x, y = pygame.mouse.get_pos()
             if self.rect.collidepoint(x, y):
                 if not self.selected:
-                    self.selectedCard.add(self)
-                    self.selected = True
-                else:
+                    otherSelected = False
+                    for card in cards:
+                        if card.selected:
+                            otherSelected = True
 
-                    # unselect, check if played
+                    if not otherSelected:
+                        self.selectedCard.add(self)
+                        self.selected = True
+
+                else:
+                    # unselect if not touching another card of same value, check if played
+                    
                     self.selected = False
+                    self.selectedCard.remove(self)
+
+
+                    for card in cards:
+                        if card != self:
+                            if self.rect.colliderect(card.rect):
+                                print("Card collision")
+                                if card.value == self.value and card.owner == self.owner:
+                                    print("Card is same value and same owner")
+                                    if card.owner.  type == "Hand":
+                                        print("Card's owner is hand")
+                                        if not card.selected:
+                                            print("Card grabbed")
+                                            self.selectedCard.add(self)
+                                            self.selectedCard.add(card)
+                                            self.selected = True
+
+                                            self.multiCards.append(card)
+
+
                     if self.rect.colliderect(self.playRect):
-                        self.selectedCard.remove(self)
+                        self.selected = False
                         self.playSpot.tryPlayCard(self)
 
 
@@ -111,9 +150,9 @@ class Deck(h.Deck):
 class Player(ch.Player):
     def __init__(self, name, x, y, rot):
         super(Player, self).__init__(name)
-        self.upCards = GraphicalHand()
-        self.downCards = GraphicalHand()
-        self.hand = GraphicalHand()
+        self.upCards = GraphicalHand("Up")
+        self.downCards = GraphicalHand("Down")
+        self.hand = GraphicalHand("Hand")
         self.x = x
         self.y = y
         self.rot = rot
@@ -201,14 +240,13 @@ class playSpot(pygame.sprite.Sprite):
                 self.clearCards()
 
         # if top card is a ten, clear pile
-        if self.discard.cards[len(self.discard.cards) - 1].value == 9:
-            print("Destroy cards")
-            self.clearCards()
+        if self.discard.cards:
+            if self.discard.cards[len(self.discard.cards) - 1].value == 9:
+                self.clearCards()
 
         # next turn
         if self.turnOver:
             self.curTurn += 1
-            print("Next turn")
             if self.curTurn > 3:
                 self.curTurn = 0
 

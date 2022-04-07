@@ -112,11 +112,10 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             for card in cards:
-                card.click()
+                card.click(cards)
     # Update
     # if the turn has moved on
     if playSpot.curTurn != curTurn:
-        print("Next turn")
         playerList[curTurn].curTurn = False
         if deck.cards and playerList[curTurn].hand.cards:
            deck.giveCard(deck.cards[0], playerList[curTurn].hand)
