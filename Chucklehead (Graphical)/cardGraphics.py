@@ -4,15 +4,28 @@ import chuckleClasses as ch
 from settings import *
 
 class GraphicalHand(ch.ChuckleHand):
-    def __init__(self, type):
+    def __init__(self, handType):
         super(GraphicalHand, self).__init__()
-        self.type = type
+        self.type = handType
 
 
     def giveCard(self, card, other_hand):
         self.cards.remove(card)
         card.owner = other_hand
         other_hand.addCard(card)
+        if other_hand.type == "Hand" or other_hand.type == "Down" or other_hand.type == "Up":
+            card.defaultOwner = other_hand
+
+class HeldCards(GraphicalHand):
+
+    def update(self):
+        if self.cards:
+            for i in range(len(self.cards)):
+                card = self.cards[i]
+                x, y = pygame.mouse.get_pos()
+                card.x = x
+                card.y = y
+                card.x += 50 * i
 
 
 class Card(pygame.sprite.Sprite):
@@ -20,13 +33,16 @@ class Card(pygame.sprite.Sprite):
     RANK = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     SUIT = ["Hearts", "Diamonds", "Spades", "Clubs"]
 
-    def __init__(self, sprites, x, y, rank, suit, playSpot, owner, selectedCard):
+    def __init__(self, sprites, x, y, rank, suit, playSpot, owner, selectedCard, cardHolder):
         super(Card, self).__init__()
         self.selectable = False
         self.back = pygame.transform.scale(sprites["Back"], (100, 150))
         self.front = pygame.transform.scale(sprites[suit][rank], (100, 150))
 
         self.owner = owner
+        self.defaultOwner = self.owner
+
+        self.cardHolder = cardHolder
 
         self.selectedCard = selectedCard
 
@@ -59,15 +75,7 @@ class Card(pygame.sprite.Sprite):
 
 
         self.defaultPos = (self.x, self.y)
-        if self.selected:
-            self.rect.center = pygame.mouse.get_pos()
-            if self.multiCards:
-                for card in self.multiCards:
-                    card.defaultPos = (self.x, self.y)
-                    self.rect.right += 75
-
-        else:
-            self.rect.center = self.defaultPos
+        self.rect.center = self.defaultPos
 
     def click(self, cards):
         if self.selectable:
@@ -75,50 +83,50 @@ class Card(pygame.sprite.Sprite):
             x, y = pygame.mouse.get_pos()
             if self.rect.collidepoint(x, y):
                 if not self.selected:
-                    otherSelected = False
-                    for card in cards:
-                        if card.selected:
-                            otherSelected = True
-
-                    if not otherSelected:
-                        self.selectedCard.add(self)
-                        self.selected = True
+                    self.selectedCard.add(self)
+                    self.selected = True
+                    self.owner.giveCard(self, self.cardHolder)
 
                 else:
                     # unselect if not touching another card of same value, check if played
-                    
-                    self.selected = False
-                    self.selectedCard.remove(self)
-
-
+                    cardSelected = False
+                    selectedCard = None
                     for card in cards:
                         if card != self:
                             if self.rect.colliderect(card.rect):
-                                print("Card collision")
-                                if card.value == self.value and card.owner == self.owner:
-                                    print("Card is same value and same owner")
-                                    if card.owner.  type == "Hand":
-                                        print("Card's owner is hand")
+                                if card.value == self.value and card.owner == self.defaultOwner:
+                                    if card.owner.type == "Hand":
                                         if not card.selected:
-                                            print("Card grabbed")
-                                            self.selectedCard.add(self)
-                                            self.selectedCard.add(card)
-                                            self.selected = True
+                                            print("card grabbed")
+                                            print(card.owner.type)
+                                            cardSelected = True
+                                            selectedCard = card
 
-                                            self.multiCards.append(card)
 
 
                     if self.rect.colliderect(self.playRect):
                         self.selected = False
                         self.playSpot.tryPlayCard(self)
+                    else:
+                        if cardSelected:
+                            selectedCard.selected = True
+                            selectedCard.owner.giveCard(selectedCard, self.cardHolder)
+                            selectedCard.selected = True
+                            self.selectedCard.add(selectedCard)
+
+                        else:
+                            self.selected = False
+                            self.owner.giveCard(self, self.defaultOwner)
+                            self.selectedCard.remove(self)
 
 
 class Deck(h.Deck):
-    def __init__(self, sprites, playSpot, selectedCard):
+    def __init__(self, sprites, playSpot, selectedCard, cardHolder):
         super(Deck, self).__init__()
         self.sprites = sprites
         self.playSpot = playSpot
         self.selectedCard = selectedCard
+        self.cardHolder = cardHolder
 
     def update(self):
         for i in range(len(self.cards)):
@@ -131,6 +139,8 @@ class Deck(h.Deck):
         self.cards.remove(card)
         card.owner = other_hand
         other_hand.addCard(card)
+        if other_hand.type == "Hand" or other_hand.type == "Down" or other_hand.type == "Up":
+            card.defaultOwner = other_hand
 
     def deal(self, hands_list, perHand=1):
         for i in range(perHand):
@@ -144,7 +154,7 @@ class Deck(h.Deck):
     def createDeck(self):
         for suit in Card.SUIT:
             for rank in Card.RANK:
-                card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard)
+                card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard, self.cardHolder)
                 self.addCard(card)
 
 class Player(ch.Player):
@@ -201,7 +211,7 @@ class playSpot(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(sprite, (100, 150))
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
-        self.discard = ch.ChuckleHand()
+        self.discard = GraphicalHand("Discard")
         self.curTurn = 0
         self.turnOver = False
 
@@ -260,10 +270,11 @@ class playSpot(pygame.sprite.Sprite):
 
 
     def playCard(self, card):
-        card.x = self.x
-        card.y = self.y
-        card.owner.giveCard(card, self.discard)
-        card.selectable = False
+        for card in card.owner.cards:
+            card.x = self.x
+            card.y = self.y
+            card.owner.giveCard(card, self.discard)
+            card.selectable = False
         self.topDeck.empty()
-        self.topDeck.add(card)
+        self.topDeck.add(self.discard.cards[len(self.discard.cards) - 1])
         self.turnOver = True

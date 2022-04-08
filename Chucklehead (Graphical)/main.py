@@ -60,8 +60,12 @@ for i in range(13):
 playSpot = cg.playSpot(playSpot, WIDTH / 2 - 100, HEIGHT / 6, topDeck)
 allSprites.add(playSpot)
 
+# make holding hand
+cardHold = cg.HeldCards("Hold")
+
+
 # create deck
-deck = cg.Deck(cardImages, playSpot, selectedCard)
+deck = cg.Deck(cardImages, playSpot, selectedCard, cardHold)
 deck.createDeck()
 deck.shuffle()
 
@@ -118,7 +122,7 @@ while running:
     if playSpot.curTurn != curTurn:
         playerList[curTurn].curTurn = False
         if deck.cards and playerList[curTurn].hand.cards:
-           deck.giveCard(deck.cards[0], playerList[curTurn].hand)
+            deck.giveCard(deck.cards[0], playerList[curTurn].hand)
         curTurn = playSpot.curTurn
         playerList[curTurn].curTurn = True
 
@@ -126,7 +130,10 @@ while running:
     allSprites.update()
     for player in playerList:
         player.update()
-        deck.update()
+    deck.update()
+
+    cardHold.update()
+
 
     # Draw / render
     screen.fill(BLACK)
