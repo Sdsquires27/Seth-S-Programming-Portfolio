@@ -37,7 +37,6 @@ class Hand(object):
     def addCard(self, card):
         self.cards.append(card)
 
-
     def giveCard(self, card, other_hand):
         self.cards.remove(card)
         other_hand.addCard(card)

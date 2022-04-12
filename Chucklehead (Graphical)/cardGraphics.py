@@ -3,6 +3,7 @@ import hands as h
 import chuckleClasses as ch
 from settings import *
 
+
 class GraphicalHand(ch.ChuckleHand):
     def __init__(self, handType):
         super(GraphicalHand, self).__init__()
@@ -16,6 +17,12 @@ class GraphicalHand(ch.ChuckleHand):
         if other_hand.type == "Hand" or other_hand.type == "Down" or other_hand.type == "Up":
             card.defaultOwner = other_hand
 
+    @property
+    def handLength(self):
+        return len(self.cards)
+
+
+
 class HeldCards(GraphicalHand):
 
     def update(self):
@@ -26,6 +33,29 @@ class HeldCards(GraphicalHand):
                 card.x = x
                 card.y = y
                 card.x += 50 * i
+
+    def click(self, cards):
+        noCollisions = True
+        if self.cards:
+            for card in self.cards:
+                if card.collisionTest(cards) != "No collisions":
+                    noCollisions = False
+                    break
+            if noCollisions:
+                self.returnCards()
+
+
+    def tryPlayCards(self):
+        if self.cards:
+            self.cards[0].playSpot.tryPlayCard(self.cards)
+
+    def returnCards(self):
+        for card in self.cards:
+            card = self.cards[0]
+            self.giveCard(card, card.defaultOwner)
+            card.selectedCard.remove(card)
+            card.selectable = False
+
 
 
 class Card(pygame.sprite.Sprite):
@@ -77,7 +107,7 @@ class Card(pygame.sprite.Sprite):
         self.defaultPos = (self.x, self.y)
         self.rect.center = self.defaultPos
 
-    def click(self, cards):
+    def click(self):
         if self.selectable:
 
             x, y = pygame.mouse.get_pos()
@@ -87,38 +117,72 @@ class Card(pygame.sprite.Sprite):
                     self.selected = True
                     self.owner.giveCard(self, self.cardHolder)
 
-                else:
                     # unselect if not touching another card of same value, check if played
-                    cardSelected = False
-                    selectedCard = None
-                    for card in cards:
-                        if card != self:
-                            if self.rect.colliderect(card.rect):
-                                if card.value == self.value and card.owner == self.defaultOwner:
-                                    if card.owner.type == "Hand":
-                                        if not card.selected:
-                                            print("card grabbed")
-                                            print(card.owner.type)
-                                            cardSelected = True
-                                            selectedCard = card
+                    # cardSelected = False
+                    # selectedCard = None
+                    # for card in cards:
+                    #     if card != self:
+                    #         if self.rect.colliderect(card.rect):
+                    #             if card.value == self.value and card.owner == self.defaultOwner:
+                    #                 if card.owner.type == "Hand":
+                    #                     if not card.selected:
+                    #                         print("card grabbed")
+                    #                         print(card.owner.type)
+                    #                         cardSelected = True
+                    #                         selectedCard = card
+                    #
+                    #
+                    #
+                    # if self.rect.colliderect(self.playRect):
+                    #     self.selected = False
+                    #     self.playSpot.tryPlayCard(self)
+                    # else:
+                    #     if cardSelected:
+                    #         selectedCard.selected = True
+                    #         selectedCard.owner.giveCard(selectedCard, self.cardHolder)
+                    #         selectedCard.selected = True
+                    #         self.selectedCard.add(selectedCard)
+                    #
+                    #     else:
+                    #         self.selected = False
+                    #         self.owner.giveCard(self, self.defaultOwner)
+                    #         self.selectedCard.remove(self)
+
+        else:
+            if self.selected:
+                self.selectable = True
+                self.selected = False
 
 
 
-                    if self.rect.colliderect(self.playRect):
-                        self.selected = False
-                        self.playSpot.tryPlayCard(self)
-                    else:
-                        if cardSelected:
-                            selectedCard.selected = True
-                            selectedCard.owner.giveCard(selectedCard, self.cardHolder)
-                            selectedCard.selected = True
-                            self.selectedCard.add(selectedCard)
 
-                        else:
-                            self.selected = False
-                            self.owner.giveCard(self, self.defaultOwner)
-                            self.selectedCard.remove(self)
+    def selectedClick(self, cards):
+        cardSelected = False
 
+
+
+
+    def collisionTest(self, cards):
+        cardSelected = False
+        for card in cards:
+                if not card.selected and \
+                self.rect.colliderect(card.rect) and \
+                card.value == self.value and card.owner == self.defaultOwner and \
+                card.owner.type == "Hand":
+                    card.selected = True
+                    card.owner.giveCard(card, self.cardHolder)
+                    cardSelected = True
+                    self.selectedCard.add(card)
+        if cardSelected:
+            return "Card picked"
+
+        if self.rect.colliderect(self.playRect):
+            self.cardHolder.tryPlayCards()
+            return "Play Cards"
+        elif not cardSelected:
+            return "No collisions"
+
+        return None
 
 class Deck(h.Deck):
     def __init__(self, sprites, playSpot, selectedCard, cardHolder):
@@ -157,6 +221,7 @@ class Deck(h.Deck):
                 card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard, self.cardHolder)
                 self.addCard(card)
 
+
 class Player(ch.Player):
     def __init__(self, name, x, y, rot):
         super(Player, self).__init__(name)
@@ -170,11 +235,10 @@ class Player(ch.Player):
 
     def update(self):
 
-
         for i in range(len(self.hand.cards)):
             card = self.hand.cards[i]
-            card.x = self.x + i * 100 + 10
-            card.y = self.y
+            card.x = self.x + (i % 3) * 100 + 10
+            card.y = self.y + ((i // 3) * 150)
             if not self.curTurn:
                 card.hide()
                 card.selectable = False
@@ -214,33 +278,45 @@ class playSpot(pygame.sprite.Sprite):
         self.discard = GraphicalHand("Discard")
         self.curTurn = 0
         self.turnOver = False
+        self.players = None
 
+    def setPlayers(self, playerList):
+        self.players = playerList
 
-
-    def tryPlayCard(self, card):
-
+    def tryPlayCard(self, cards):
+        curPlayer = self.players[self.curTurn]
         self.turnOver = False
         # if no cards, play card
         if not self.discard.cards:
-            self.playCard(card)
+            self.playCard(cards)
 
         # if cards, check that card is higher or equal than previous card (or lower if seven)
         else:
             topCard = self.discard.cards[len(self.discard.cards) - 1]
-
+            card = cards[0]
             # if card is not a seven
             if topCard.value != 6:
                 # if card is greater than, equal to, or a 2
                 if card.value >= topCard.value or card.value == 1:
-                    self.playCard(card)
+                    self.playCard(cards)
+                else:
+                    if card.faceUp:
+                        card.cardHolder.returnCards()
+                    else:
+                        self.giveToHand(curPlayer.hand)
+                        self.turnOver = True
 
             elif topCard.value == 6:
                 if card.value <= topCard.value:
-                    self.playCard(card)
-
+                    self.playCard(cards)
+                else:
+                    if card.faceUp:
+                        card.cardHolder.returnCards()
+                    else:
+                        self.giveToHand(curPlayer.hand)
+                        self.turnOver = True
 
         # Check for special effects
-
         # if top four cards are the same
         if len(self.discard.cards) >= 4:
             topCards = []
@@ -260,7 +336,20 @@ class playSpot(pygame.sprite.Sprite):
             if self.curTurn > 3:
                 self.curTurn = 0
 
-
+    def giveToHand(self, otherHand):
+        max = False
+        for i in range(len(self.discard.cards)):
+            if not max:
+                if len(otherHand.cards) > 5:
+                    max = True
+                else:
+                    topCard = self.discard.cards[len(self.discard.cards) - 1]
+                    self.discard.giveCard(topCard, otherHand)
+            else:
+                self.clearCards()
+        self.curTurn += 1
+        if self.curTurn > 3:
+            self.curTurn = 0
 
     def clearCards(self):
         for card in self.discard.cards:
@@ -268,13 +357,16 @@ class playSpot(pygame.sprite.Sprite):
 
         self.discard.cards.clear()
 
-
-    def playCard(self, card):
-        for card in card.owner.cards:
+    def playCard(self, cards):
+        for i in range(len(cards)):
+            card = cards[0]
             card.x = self.x
             card.y = self.y
             card.owner.giveCard(card, self.discard)
             card.selectable = False
+            card.selected = False
+            if not card.faceUp:
+                card.show()
         self.topDeck.empty()
         self.topDeck.add(self.discard.cards[len(self.discard.cards) - 1])
         self.turnOver = True

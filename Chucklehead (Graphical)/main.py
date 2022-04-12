@@ -9,6 +9,7 @@ import pygame
 from player import *
 import cardGraphics as cg
 import chuckleClasses as ch
+import ui
 
 # initialize pygame and create window
 pygame.init()
@@ -33,6 +34,7 @@ background_rect = background.get_rect()
 
 # initialize the playable space image
 playSpot = pygame.image.load(os.path.join(cardFolder, "Play Here.jfif"))
+buttonImage = pygame.image.load(os.path.join(imgFolder, "button.png"))
 
 # initialize the deck images
 cardImages["Back"] = pygame.image.load(os.path.join(cardFolder, "Back.jfif"))
@@ -63,6 +65,9 @@ allSprites.add(playSpot)
 # make holding hand
 cardHold = cg.HeldCards("Hold")
 
+# make take deck button
+takeDiscard = ui.PgButton(buttonImage, playSpot)
+allSprites.add(takeDiscard)
 
 # create deck
 deck = cg.Deck(cardImages, playSpot, selectedCard, cardHold)
@@ -92,12 +97,14 @@ for i in range(players):
 
     playerList.append(x)
 
+playSpot.setPlayers(playerList)
 
 deck.deal(downDecks, 3)
 deck.deal(upDecks, 3)
 deck.deal(hands, 3)
 
 curTurn = 0
+takeDiscard.setPlayer(playerList[curTurn])
 
 def newTurn():
     playerList[curTurn].curTurn = True
@@ -115,17 +122,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            cardHold.click(cards)
             for card in cards:
-                card.click(cards)
+                card.click()
+            takeDiscard.click()
     # Update
     # if the turn has moved on
     if playSpot.curTurn != curTurn:
         playerList[curTurn].curTurn = False
-        if deck.cards and playerList[curTurn].hand.cards:
+        if deck.cards and playerList[curTurn].hand.cards and playerList[curTurn].hand.handLength < 3:
             deck.giveCard(deck.cards[0], playerList[curTurn].hand)
+
         curTurn = playSpot.curTurn
         playerList[curTurn].curTurn = True
-
+        takeDiscard.setPlayer(playerList[curTurn])
 
     allSprites.update()
     for player in playerList:
