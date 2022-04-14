@@ -5,6 +5,7 @@ from settings import *
 
 
 class GraphicalHand(ch.ChuckleHand):
+    """An updated version of the chuckle hand that allows for changing owner of cards."""
     def __init__(self, handType):
         super(GraphicalHand, self).__init__()
         self.type = handType
@@ -21,14 +22,15 @@ class GraphicalHand(ch.ChuckleHand):
     def handLength(self):
         return len(self.cards)
 
-
-
 class HeldCards(GraphicalHand):
-
+    """This holds the cards while they are not in a hand."""
     def update(self):
+        # move the cards to mouse position.
         if self.cards:
+            self.cards[0].selectedCard.empty()
             for i in range(len(self.cards)):
                 card = self.cards[i]
+                card.selectedCard.add(card)
                 x, y = pygame.mouse.get_pos()
                 card.x = x
                 card.y = y
@@ -36,6 +38,7 @@ class HeldCards(GraphicalHand):
 
     def click(self, cards):
         noCollisions = True
+        # if cards don't collide with anything, give the cards back to their hand
         if self.cards:
             for card in self.cards:
                 if card.collisionTest(cards) != "No collisions":
@@ -44,28 +47,29 @@ class HeldCards(GraphicalHand):
             if noCollisions:
                 self.returnCards()
 
-
     def tryPlayCards(self):
+        # try to play cards
         if self.cards:
             self.cards[0].playSpot.tryPlayCard(self.cards)
 
     def returnCards(self):
+        # give cards back to original hand
         for card in self.cards:
             card = self.cards[0]
             self.giveCard(card, card.defaultOwner)
             card.selectedCard.remove(card)
             card.selectable = False
 
-
-
 class Card(pygame.sprite.Sprite):
-
+    """A graphical version of the card"""
     RANK = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     SUIT = ["Hearts", "Diamonds", "Spades", "Clubs"]
 
     def __init__(self, sprites, x, y, rank, suit, playSpot, owner, selectedCard, cardHolder):
         super(Card, self).__init__()
         self.selectable = False
+
+        # set the back and front of the card.
         self.back = pygame.transform.scale(sprites["Back"], (100, 150))
         self.front = pygame.transform.scale(sprites[suit][rank], (100, 150))
 
@@ -185,6 +189,7 @@ class Card(pygame.sprite.Sprite):
         return None
 
 class Deck(h.Deck):
+    """An updated version of the deck"""
     def __init__(self, sprites, playSpot, selectedCard, cardHolder):
         super(Deck, self).__init__()
         self.sprites = sprites
@@ -193,13 +198,16 @@ class Deck(h.Deck):
         self.cardHolder = cardHolder
 
     def update(self):
+        # update the card's positions in deck.
         for i in range(len(self.cards)):
             card = self.cards[i]
+            # move each card slightly so the length of deck can be seen.
             card.x = WIDTH/2 + 100 + i
             card.y = HEIGHT/6
             card.faceUp = False
 
     def giveCard(self, card, other_hand):
+        # updated give card function to allow for changing the owner of the card.
         self.cards.remove(card)
         card.owner = other_hand
         other_hand.addCard(card)
@@ -213,28 +221,28 @@ class Deck(h.Deck):
                 topCard.owner = hand
                 self.giveCard(topCard, hand)
 
-
-
     def createDeck(self):
         for suit in Card.SUIT:
             for rank in Card.RANK:
+                # set the card's graphics and details.
                 card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard, self.cardHolder)
                 self.addCard(card)
 
-
 class Player(ch.Player):
-    def __init__(self, name, x, y, rot):
+    """oversees the three different hands. Sets position for cards."""
+    def __init__(self, name, x, y, heldCards):
         super(Player, self).__init__(name)
         self.upCards = GraphicalHand("Up")
         self.downCards = GraphicalHand("Down")
         self.hand = GraphicalHand("Hand")
         self.x = x
         self.y = y
-        self.rot = rot
+        self.heldCards = heldCards
         self.curTurn = False
 
     def update(self):
 
+        # update the cards in hand
         for i in range(len(self.hand.cards)):
             card = self.hand.cards[i]
             card.x = self.x + (i % 3) * 100 + 10
@@ -246,7 +254,7 @@ class Player(ch.Player):
                 card.show()
                 card.selectable = True
 
-
+        # update the cards in down cards
         for i in range(len(self.downCards.cards)):
             card = self.downCards.cards[i]
             card.x = self.x + i * 110
@@ -254,19 +262,21 @@ class Player(ch.Player):
             card.hide()
 
             if self.curTurn:
-                if not self.hand.cards and not self.upCards.cards:
+                if not self.hand.cards and not self.upCards.cards and not self.heldCards.cards:
                     card.selectable = True
 
+        # update the cards in down cards
         for i in range(len(self.upCards.cards)):
             card = self.upCards.cards[i]
             card.x = self.x + i * 110
             card.y = self.y - 110
 
             if self.curTurn:
-                if not self.hand.cards:
+                if not self.hand.cards and not self.heldCards.cards:
                     card.selectable = True
 
 class playSpot(pygame.sprite.Sprite):
+    """Where you play the cards. Determines when the next turn will happen, tests if cards can be played, etc."""
     def __init__(self, sprite, x, y, topDeckGroup):
         super(playSpot, self).__init__()
         self.x = x
@@ -286,14 +296,17 @@ class playSpot(pygame.sprite.Sprite):
     def tryPlayCard(self, cards):
         curPlayer = self.players[self.curTurn]
         self.turnOver = False
+
         # if no cards, play card
         if not self.discard.cards:
             self.playCard(cards)
 
         # if cards, check that card is higher or equal than previous card (or lower if seven)
         else:
+            # define top card and card being played
             topCard = self.discard.cards[len(self.discard.cards) - 1]
             card = cards[0]
+
             # if card is not a seven
             if topCard.value != 6:
                 # if card is greater than, equal to, or a 2
@@ -303,9 +316,14 @@ class playSpot(pygame.sprite.Sprite):
                     if card.faceUp:
                         card.cardHolder.returnCards()
                     else:
+                        # if card is facedown, give hand to current player and end turn.
                         self.giveToHand(curPlayer.hand)
+                        card.owner.giveCard(card, curPlayer.hand)
+                        card.selected = False
+                        card.selectable = False
                         self.turnOver = True
 
+            # if card is a seven
             elif topCard.value == 6:
                 if card.value <= topCard.value:
                     self.playCard(cards)
@@ -314,9 +332,13 @@ class playSpot(pygame.sprite.Sprite):
                         card.cardHolder.returnCards()
                     else:
                         self.giveToHand(curPlayer.hand)
+                        card.owner.giveCard(card, curPlayer.hand)
+                        card.selected = False
+                        card.selectable = False
                         self.turnOver = True
 
         # Check for special effects
+
         # if top four cards are the same
         if len(self.discard.cards) >= 4:
             topCards = []
@@ -333,31 +355,37 @@ class playSpot(pygame.sprite.Sprite):
         # next turn
         if self.turnOver:
             self.curTurn += 1
-            if self.curTurn > 3:
+            if self.curTurn >= len(self.players):
                 self.curTurn = 0
 
     def giveToHand(self, otherHand):
         max = False
+        # for card in discard
         for i in range(len(self.discard.cards)):
             if not max:
+                # max is six due to graphical limitations
                 if len(otherHand.cards) > 5:
                     max = True
                 else:
                     topCard = self.discard.cards[len(self.discard.cards) - 1]
                     self.discard.giveCard(topCard, otherHand)
-            else:
-                self.clearCards()
+
+        # clear extra cards
+        self.clearCards()
         self.curTurn += 1
-        if self.curTurn > 3:
+        if self.curTurn >= len(self.players):
             self.curTurn = 0
 
     def clearCards(self):
-        for card in self.discard.cards:
-            card.kill()
+        # destroy every card
+        for i in range(len(self.discard.cards)):
+            self.discard.cards[0].kill()
+            self.discard.cards.pop(0)
 
         self.discard.cards.clear()
 
     def playCard(self, cards):
+        # for every card currently selected
         for i in range(len(cards)):
             card = cards[0]
             card.x = self.x
@@ -367,6 +395,10 @@ class playSpot(pygame.sprite.Sprite):
             card.selected = False
             if not card.faceUp:
                 card.show()
+            card.selectedCard.empty()
+
+        # reset the top card of deck
         self.topDeck.empty()
         self.topDeck.add(self.discard.cards[len(self.discard.cards) - 1])
+
         self.turnOver = True

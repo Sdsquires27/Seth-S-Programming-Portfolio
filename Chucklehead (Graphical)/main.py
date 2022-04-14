@@ -2,13 +2,11 @@
 # Seth Squires
 # 3/22 - 4/22
 
-import random
 
 import pygame
 
 from player import *
 import cardGraphics as cg
-import chuckleClasses as ch
 import ui
 
 # initialize pygame and create window
@@ -35,6 +33,7 @@ background_rect = background.get_rect()
 # initialize the playable space image
 playSpot = pygame.image.load(os.path.join(cardFolder, "Play Here.jfif"))
 buttonImage = pygame.image.load(os.path.join(imgFolder, "button.png"))
+darkButtonImage = pygame.image.load(os.path.join(imgFolder, "darkButton.png"))
 
 # initialize the deck images
 cardImages["Back"] = pygame.image.load(os.path.join(cardFolder, "Back.jfif"))
@@ -66,7 +65,7 @@ allSprites.add(playSpot)
 cardHold = cg.HeldCards("Hold")
 
 # make take deck button
-takeDiscard = ui.PgButton(buttonImage, playSpot)
+takeDiscard = ui.PgButton(buttonImage, darkButtonImage, playSpot)
 allSprites.add(takeDiscard)
 
 # create deck
@@ -79,40 +78,110 @@ for card in deck.cards:
     allSprites.add(card)
     cards.add(card)
 
-# create players
+# create players (rest of the provess is in the new game)
 playerList = []
 downDecks = []
 upDecks = []
 hands = []
-# default is four, change this later
-players = 4
-for i in range(players):
-    # Name is set simply to the player number. change this later.
-    x = cg.Player(str.format("Player {}", i+1), (i + 1) * 400 - 300, HEIGHT - 300, 0)
-
-    # add the player's three different decks to a list of the decks.
-    downDecks.append(x.downCards)
-    upDecks.append(x.upCards)
-    hands.append(x.hand)
-
-    playerList.append(x)
-
-playSpot.setPlayers(playerList)
-
-deck.deal(downDecks, 3)
-deck.deal(upDecks, 3)
-deck.deal(hands, 3)
-
 curTurn = 0
-takeDiscard.setPlayer(playerList[curTurn])
+
+
+def drawText(surf, text, size, x, y, color):
+    font = pygame.font.Font(fontArial, size)
+    textSurface = font.render(text, True, color)
+    textRect = textSurface.get_rect()
+    textRect.midtop = (x, y)
+    surf.blit(textSurface, textRect)
+
+
+def showStartScreen():
+    screen.blit(background, background_rect)
+    drawText(screen, "Chucklehead", 65, WIDTH / 2, HEIGHT / 4, WHITE)
+    i = 0
+    for rule in chuckleRules:
+        i += 1
+        drawText(screen, rule, 18, WIDTH / 2, HEIGHT / 3 + i * 20, WHITE)
+    drawText(screen, "Click a number from two to four to determine the number of players.",
+             36, WIDTH / 2, HEIGHT * 3 / 4, WHITE)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_2:
+                    return 2
+                elif event.key == pygame.K_3:
+                    return 3
+                elif event.key == pygame.K_4:
+                    return 4
+
 
 def newTurn():
     playerList[curTurn].curTurn = True
 
+def newGame():
+    # player number is equal to key pressed
+    players = showStartScreen()
+    for i in range(players):
+        # Name is set simply to the player number. change this later.
+        x = cg.Player(str.format("Player {}", i + 1), (i + 1) * 400 - 300, HEIGHT - 300, cardHold)
+
+        # add the player's three different decks to a list of the decks.
+        downDecks.append(x.downCards)
+        upDecks.append(x.upCards)
+        hands.append(x.hand)
+
+        playerList.append(x)
+
+    # tell the play spot who the players are for turn purposes
+    playSpot.setPlayers(playerList)
+
+    # deal cards
+    deck.deal(downDecks, 3)
+    deck.deal(upDecks, 3)
+    deck.deal(hands, 3)
+
+    takeDiscard.setPlayer(playerList[curTurn])
+
+def nextTurn(playerName):
+    # pause between turns so that people don't cheat and stuff
+    screen.blit(background, background_rect)
+    drawText(screen, playerName+"'s turn!", 65, WIDTH / 2, HEIGHT / 4, WHITE)
+    drawText(screen, "Press any key to play.", 36, WIDTH / 2, HEIGHT * 3 / 4, WHITE)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                waiting = False
+
+
+def showWinScreen(winner):
+    # tell the player who wins (:
+    screen.blit(background, background_rect)
+    drawText(screen, winner+" wins!", 65, WIDTH / 2, HEIGHT / 4, WHITE)
+    drawText(screen, "Press any key to return to the tile screen.", 18, WIDTH / 2, HEIGHT * 3 / 4, WHITE)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                waiting = False
 
 # Game loop
 running = True
+newGame()
 newTurn()
+nextTurn(playerList[curTurn].name)
 while running:
     # keep loop running at the right speed
     clock.tick(FPS)
@@ -127,30 +196,60 @@ while running:
                 card.click()
             takeDiscard.click()
     # Update
+
     # if the turn has moved on
     if playSpot.curTurn != curTurn:
         playerList[curTurn].curTurn = False
+
+        # if the deck and player has cards and the player has less than three cards
         if deck.cards and playerList[curTurn].hand.cards and playerList[curTurn].hand.handLength < 3:
             deck.giveCard(deck.cards[0], playerList[curTurn].hand)
 
         curTurn = playSpot.curTurn
         playerList[curTurn].curTurn = True
         takeDiscard.setPlayer(playerList[curTurn])
+        nextTurn(playerList[curTurn].name)
+    # check for winner
+    for play in playerList:
+        if not play.hand.cards and not play.upCards.cards and not play.downCards.cards and not cardHold.cards:
+            showWinScreen(play.name)
+            newGame()
+            newTurn()
 
+
+
+    # update sprites
     allSprites.update()
+
+    # update players
     for player in playerList:
         player.update()
+
+    # update deck
     deck.update()
 
+    # update hand holding cards
     cardHold.update()
 
 
     # Draw / render
     screen.fill(BLACK)
     screen.blit(background, background_rect)
+
+    # draw all sprites
     allSprites.draw(screen)
+
+    # draw the top card of the deck
     topDeck.draw(screen)
+
+    # draw the card in your hand
     selectedCard.draw(screen)
+
+    # draw text
+    drawText(screen, "Take pile", 36, WIDTH - 200, HEIGHT / 5 + 20, WHITE)
+    for player in playerList:
+        drawText(screen, player.name, 18, player.x + 110, player.y + 100, WHITE)
+
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
