@@ -116,10 +116,11 @@ class Card(pygame.sprite.Sprite):
 
             x, y = pygame.mouse.get_pos()
             if self.rect.collidepoint(x, y):
-                if not self.selected:
-                    self.selectedCard.add(self)
-                    self.selected = True
-                    self.owner.giveCard(self, self.cardHolder)
+                if not self.cardHolder.cards:
+                    if not self.selected:
+                        self.selectedCard.add(self)
+                        self.selected = True
+                        self.owner.giveCard(self, self.cardHolder)
 
                     # unselect if not touching another card of same value, check if played
                     # cardSelected = False
@@ -270,10 +271,12 @@ class Player(ch.Player):
             card = self.upCards.cards[i]
             card.x = self.x + i * 110
             card.y = self.y - 110
+            card.selectable = False
 
             if self.curTurn:
                 if not self.hand.cards and not self.heldCards.cards:
                     card.selectable = True
+
 
 class playSpot(pygame.sprite.Sprite):
     """Where you play the cards. Determines when the next turn will happen, tests if cards can be played, etc."""
