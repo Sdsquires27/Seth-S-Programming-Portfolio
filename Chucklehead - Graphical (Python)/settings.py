@@ -5,6 +5,7 @@ import pygame
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
 cardFolder = os.path.join(imgFolder, "Cards")
+sndFolder = os.path.join(gameFolder, "snd")
 
 fontArial = pygame.font.match_font("arial")
 

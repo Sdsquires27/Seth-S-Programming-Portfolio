@@ -52,8 +52,20 @@ for i in range(13):
 for i in range(13):
     cardImages["Diamonds"].append(pygame.image.load(os.path.join(cardFolder, str.format("Diamond {}.png", i + 1))))
 
+# initialize game sounds
+shuffleSound = pygame.mixer.Sound(os.path.join(sndFolder, "shuffle.wav"))
+
+pygame.mixer.music.load(os.path.join(sndFolder, "Beethoven_hammerklavier_4.ogg.wav"))
+pygame.mixer.music.set_volume(1)
+pygame.mixer.music.play(loops=-1)
 
 
+cardSounds = {}
+cardSounds["Pickup"] = []
+cardSounds["Place Down"] = []
+for i in range(3):
+    cardSounds["Pickup"].append(pygame.mixer.Sound(os.path.join(sndFolder, str.format("cardSlide{}.wav", i+1))))
+    cardSounds["Place Down"].append(pygame.mixer.Sound(os.path.join(sndFolder, str.format("cardPlace{}.wav", i+1))))
 
 # set up game
 
@@ -69,7 +81,7 @@ takeDiscard = ui.PgButton(buttonImage, darkButtonImage, playSpot)
 allSprites.add(takeDiscard)
 
 # create deck
-deck = cg.Deck(cardImages, playSpot, selectedCard, cardHold)
+deck = cg.Deck(cardImages, playSpot, selectedCard, cardHold, cardSounds)
 deck.createDeck()
 deck.shuffle()
 
@@ -125,6 +137,8 @@ def newTurn():
 def newGame():
     # player number is equal to key pressed
     players = showStartScreen()
+    shuffleSound.play()
+    pygame.mixer.music.set_volume(.75)
     for i in range(players):
         # Name is set simply to the player number. change this later.
         x = cg.Player(str.format("Player {}", i + 1), (i + 1) * 400 - 300, HEIGHT - 300, cardHold)
@@ -164,6 +178,7 @@ def nextTurn(playerName):
 
 def showWinScreen(winner):
     # tell the player who wins (:
+    pygame.mixer.music.set_volume(1)
     screen.blit(background, background_rect)
     drawText(screen, winner+" wins!", 65, WIDTH / 2, HEIGHT / 4, WHITE)
     drawText(screen, "Press any key to return to the tile screen.", 18, WIDTH / 2, HEIGHT * 3 / 4, WHITE)

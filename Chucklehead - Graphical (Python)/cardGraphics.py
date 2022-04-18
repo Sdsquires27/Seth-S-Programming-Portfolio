@@ -2,6 +2,7 @@ import pygame
 import hands as h
 import chuckleClasses as ch
 from settings import *
+import random
 
 
 class GraphicalHand(ch.ChuckleHand):
@@ -50,10 +51,12 @@ class HeldCards(GraphicalHand):
     def tryPlayCards(self):
         # try to play cards
         if self.cards:
+            random.choice(self.cards[0].cardSounds["Place Down"]).play()
             self.cards[0].playSpot.tryPlayCard(self.cards)
 
     def returnCards(self):
         # give cards back to original hand
+        random.choice(self.cards[0].cardSounds["Place Down"]).play()
         for card in self.cards:
             card = self.cards[0]
             self.giveCard(card, card.defaultOwner)
@@ -65,7 +68,7 @@ class Card(pygame.sprite.Sprite):
     RANK = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     SUIT = ["Hearts", "Diamonds", "Spades", "Clubs"]
 
-    def __init__(self, sprites, x, y, rank, suit, playSpot, owner, selectedCard, cardHolder):
+    def __init__(self, sprites, x, y, rank, suit, playSpot, owner, selectedCard, cardHolder, cardSounds):
         super(Card, self).__init__()
         self.selectable = False
 
@@ -79,6 +82,8 @@ class Card(pygame.sprite.Sprite):
         self.cardHolder = cardHolder
 
         self.selectedCard = selectedCard
+
+        self.cardSounds = cardSounds
 
         self.value = rank
         if self.value == 0:
@@ -121,6 +126,8 @@ class Card(pygame.sprite.Sprite):
                         self.selectedCard.add(self)
                         self.selected = True
                         self.owner.giveCard(self, self.cardHolder)
+                        random.choice(self.cardSounds["Pickup"]).play()
+
 
                     # unselect if not touching another card of same value, check if played
                     # cardSelected = False
@@ -165,8 +172,6 @@ class Card(pygame.sprite.Sprite):
         cardSelected = False
 
 
-
-
     def collisionTest(self, cards):
         cardSelected = False
         for card in cards:
@@ -191,12 +196,13 @@ class Card(pygame.sprite.Sprite):
 
 class Deck(h.Deck):
     """An updated version of the deck"""
-    def __init__(self, sprites, playSpot, selectedCard, cardHolder):
+    def __init__(self, sprites, playSpot, selectedCard, cardHolder, cardSounds):
         super(Deck, self).__init__()
         self.sprites = sprites
         self.playSpot = playSpot
         self.selectedCard = selectedCard
         self.cardHolder = cardHolder
+        self.cardSounds = cardSounds
 
     def update(self):
         # update the card's positions in deck.
@@ -226,7 +232,8 @@ class Deck(h.Deck):
         for suit in Card.SUIT:
             for rank in Card.RANK:
                 # set the card's graphics and details.
-                card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard, self.cardHolder)
+                card = Card(self.sprites, 0, 0, rank, suit, self.playSpot, self, self.selectedCard, self.cardHolder,
+                            self.cardSounds)
                 self.addCard(card)
 
 class Player(ch.Player):
@@ -276,7 +283,6 @@ class Player(ch.Player):
             if self.curTurn:
                 if not self.hand.cards and not self.heldCards.cards:
                     card.selectable = True
-
 
 class playSpot(pygame.sprite.Sprite):
     """Where you play the cards. Determines when the next turn will happen, tests if cards can be played, etc."""
