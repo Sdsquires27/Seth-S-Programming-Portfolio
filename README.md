@@ -1,5 +1,5 @@
 # Seth-S-Programming-Portfolio
-This is my programming portfolio. This was initially created in my Python class in high school and has many of the projects I have worked on.
+This is my programming portfolio. This was created in my Python class in high school and has many of the projects I have worked on.
 
 Here is a brief overview of each project in this portfolio:
 
@@ -30,3 +30,10 @@ fight (Unity, C#):
 Requirements: Windows OS
 
 We made this game as a group in my Game Development class. Although some of it, such as the basic features and mechanics of the game, were designed as a whole, I was able to design a lot of my own things as well, like the particle effects and the overall feel of the game, as well as additional features.
+
+
+Jumpy platformer (Python):
+
+Requirements: Python installed, pygame installed
+
+This project was made with the help of a tutorial. I wanted to learn what I could about platformers without jumping into it with no assistance, and the tutorial I used was a huge help for that. I also tried to try my own things while making this, like using sprites different than the ones used in the tutorial to learn how to cut my own sprites. This helped me learn many important skills in pygame.
