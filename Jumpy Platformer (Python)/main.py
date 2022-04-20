@@ -1,8 +1,11 @@
 # Pygame template - skeleton for a new pygame project
+import pygame
 import pygame as pg
 import random
 from player import *
 from platform import *
+from os import path
+from spritesheet import *
 
 class Game:
     def __init__(self):
@@ -14,6 +17,24 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.fontName = pg.font.match_font(FONT_NAME)
+        self.loadData()
+
+    def loadData(self):
+        # load high score
+        self.dir = path.dirname(__file__)
+        img_dir = path.join(self.dir, "img")
+
+        with open(path.join(self.dir, HS_FILE), "r") as f:
+            try:
+                self.highscore = int(f.read())
+            except:
+                self.highscore = 0
+
+        self.platformImageBig = pygame.image.load(os.path.join(imgFolder, "ground_grass.png"))
+        self.platformImageSmall = pygame.image.load(os.path.join(imgFolder, "ground_grass_small.png"))
+
+        # load spritesheet image
+        self.playerSpritesheet = Spritesheet(path.join(img_dir, PLAYER_SPRITESHEET))
 
     def new(self):
         # initialize the game
@@ -23,12 +44,11 @@ class Game:
         self.score = 0
 
         # initialize player
-        self.playerImg = pg.image.load(os.path.join(imgFolder, "Vessel.png")).convert()
         self.player = Player(self)
         self.allSprites.add(self.player)
 
         for plat in PLATFORM_LIST:
-            p = Platform(*plat)
+            p = Platform(*plat, self)
             self.allSprites.add(p)
             self.platforms.add(p)
 
@@ -51,14 +71,20 @@ class Game:
         if self.player.vel.y > 0:
             hits = pygame.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
-                self.player.pos.y = hits[0].rect.top
-                self.player.vel.y = 0
+                lowest = hits[0]
+                for hit in hits:
+                    if hit.rect.bottom > lowest.rect.bottom:
+                        lowest = hit
+                if self.player.pos.y < lowest.rect.bottom:
+                    self.player.jumping = False
+                    self.player.pos.y = lowest.rect.top
+                    self.player.vel.y = 0
 
         # if player reaches top 1 / 4 of screen
         if self.player.rect.top <= HEIGHT / 4:
-            self.player.pos.y += abs(self.player.vel.y)
+            self.player.pos.y += max(abs(self.player.vel.y), 2)
             for plat in self.platforms:
-                plat.rect.y += abs(self.player.vel.y)
+                plat.rect.y += max(abs(self.player.vel.y), 2)
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
                     self.score += 10
@@ -77,7 +103,7 @@ class Game:
             width = random.randrange(50, 100)
             p = Platform(random.randrange(0, WIDTH - width),
                          random.randrange(-75, -30),
-                         width, 20)
+                         self)
             self.platforms.add(p)
             self.allSprites.add(p)
 
@@ -92,11 +118,15 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.player.jump()
+            if event.type == pygame.KEYUP:
+                if event.key == pg.K_SPACE:
+                    self.player.jumpCut()
 
     def draw(self):
         # game loop - draw
-        self.screen.fill(BLUE)
+        self.screen.fill(LIGHTBLUE)
         self.allSprites.draw(self.screen)
+        self.screen.blit(self.player.image, self.player.rect)
         # draw score
         self.drawText(str(self.score), 22, WHITE, WIDTH / 2, 15)
         # *after* drawing everything, flip the display
@@ -104,11 +134,44 @@ class Game:
 
     def showStartScreen(self):
         # game splash/start screen
-        pass
+        self.screen.fill(LIGHTBLUE)
+        self.drawText("Jumpy platformer", 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.drawText("Arrow keys to move, space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Press any key to start", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.drawText("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
+        pg.display.flip()
+        self.waitForKey()
 
     def showGoScreen(self):
         # game over screen
-        pass
+        if not self.running:
+            return
+        self.screen.fill(LIGHTBLUE)
+        self.drawText("Game Over", 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.drawText("Score: "+ str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Pres a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+
+        if self.score > self.highscore:
+            self.highscore = self.score
+            self.drawText("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            with open(path.join(self.dir, HS_FILE), "w") as f:
+                f.write(str(self.score))
+        else:
+            self.drawText("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+
+        pg.display.flip()
+        self.waitForKey()
+
+    def waitForKey(self):
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pygame.KEYUP:
+                    waiting = False
 
     def drawText(self, text, size, color, x, y):
         font = pygame.font.Font(self.fontName, size)
