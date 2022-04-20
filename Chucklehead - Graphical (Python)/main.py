@@ -55,7 +55,7 @@ for i in range(13):
 # initialize game sounds
 shuffleSound = pygame.mixer.Sound(os.path.join(sndFolder, "shuffle.wav"))
 
-pygame.mixer.music.load(os.path.join(sndFolder, "Beethoven_hammerklavier_4.ogg.wav"))
+pygame.mixer.music.load(os.path.join(sndFolder, "mainTheme.ogg"))
 pygame.mixer.music.set_volume(1)
 pygame.mixer.music.play(loops=-1)
 
