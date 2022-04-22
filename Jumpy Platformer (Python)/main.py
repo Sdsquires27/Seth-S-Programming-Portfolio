@@ -6,6 +6,7 @@ from player import *
 from platform import *
 from os import path
 from spritesheet import *
+from Mob import *
 
 class Game:
     def __init__(self):
@@ -22,7 +23,6 @@ class Game:
     def loadData(self):
         # load high score
         self.dir = path.dirname(__file__)
-        img_dir = path.join(self.dir, "img")
 
         with open(path.join(self.dir, HS_FILE), "r") as f:
             try:
@@ -33,39 +33,68 @@ class Game:
         self.platformImageBig = pygame.image.load(os.path.join(imgFolder, "ground_grass.png"))
         self.platformImageSmall = pygame.image.load(os.path.join(imgFolder, "ground_grass_small.png"))
 
+        self.cloudImages = []
+        for i in range(1, 3):
+            self.cloudImages.append(pg.image.load(path.join(imgFolder, "cloud{}.png".format(i))))
+
         # load spritesheet image
-        self.playerSpritesheet = Spritesheet(path.join(img_dir, PLAYER_SPRITESHEET))
+        self.playerSpritesheet = Spritesheet(path.join(imgFolder, PLAYER_SPRITESHEET))
+        self.enemySpritesheet = Spritesheet(path.join(imgFolder, ENEMY_SPRITESHEET))
+
+        # load sounds
+        self.jumpSnd = pg.mixer.Sound(path.join(sndFolder, "Hit1.wav"))
+        self.boostSnd = pg.mixer.Sound(path.join(sndFolder, "OK - 2.wav"))
 
     def new(self):
         # initialize the game
-        self.allSprites = pygame.sprite.Group()
+        self.allSprites = pygame.sprite.LayeredUpdates()
         self.platforms = pg.sprite.Group()
+        self.powerups = pg.sprite.Group()
+        self.mobs = pg.sprite.Group()
+        self.clouds = pg.sprite.Group()
 
         self.score = 0
 
+        self.mobTimer = 0
+
         # initialize player
         self.player = Player(self)
-        self.allSprites.add(self.player)
+
 
         for plat in PLATFORM_LIST:
             p = Platform(*plat, self)
             self.allSprites.add(p)
             self.platforms.add(p)
+        pg.mixer.music.load(path.join(sndFolder, "Happytune.wav"))
 
         g.run()
 
     def run(self):
         # Game loop
+        pg.mixer.music.play(loops=-1)
+        pg.mixer.music.set_volume(.5)
         self.playing = True
         while self.playing:
             self.clock.tick(FPS)
             self.events()
             self.update()
             self.draw()
+        pg.mixer.music.fadeout(500)
 
     def update(self):
         # Game Loop - Update
         self.allSprites.update()
+
+        # spawn mobs
+        now = pg.time.get_ticks()
+        if now - self.mobTimer > MOB_FREQ + random.choice([-1000, 1000, -500, 0 , 500]):
+            self.mobTimer = now
+            Mob(self)
+
+        # mob collision
+        mobHits = pg.sprite.spritecollide(self.player, self.mobs, False, pg.sprite.collide_mask)
+        if mobHits:
+            self.playing = False
 
         # check if player hits a platform and is falling
         if self.player.vel.y > 0:
@@ -75,10 +104,12 @@ class Game:
                 for hit in hits:
                     if hit.rect.bottom > lowest.rect.bottom:
                         lowest = hit
-                if self.player.pos.y < lowest.rect.bottom:
-                    self.player.jumping = False
-                    self.player.pos.y = lowest.rect.top
-                    self.player.vel.y = 0
+
+                if lowest.rect.right + 10 > self.player.pos.x > lowest.rect.left - 10:
+                    if self.player.pos.y < lowest.rect.bottom:
+                        self.player.jumping = False
+                        self.player.pos.y = lowest.rect.top
+                        self.player.vel.y = 0
 
         # if player reaches top 1 / 4 of screen
         if self.player.rect.top <= HEIGHT / 4:
@@ -88,6 +119,16 @@ class Game:
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
                     self.score += 10
+            for mob in self.mobs:
+                mob.rect.y += max(abs(self.player.vel.y), 2)
+
+        # if player hits powerup
+        powHits = pg.sprite.spritecollide(self.player, self.powerups, True)
+        for pow in powHits:
+            if pow.type == "boost":
+                self.player.vel.y = -BOOST_POWER
+                self.player.jumping = False
+                self.boostSnd.play()
 
         # Die!
         if self.player.rect.bottom > HEIGHT:
@@ -101,11 +142,7 @@ class Game:
         # spawn new platforms to keep same average number
         while len(self.platforms) < 6:
             width = random.randrange(50, 100)
-            p = Platform(random.randrange(0, WIDTH - width),
-                         random.randrange(-75, -30),
-                         self)
-            self.platforms.add(p)
-            self.allSprites.add(p)
+            Platform(random.randrange(0, WIDTH - width), random.randrange(-75, -30), self)
 
     def events(self):
         # Game loop - Event
@@ -126,7 +163,6 @@ class Game:
         # game loop - draw
         self.screen.fill(LIGHTBLUE)
         self.allSprites.draw(self.screen)
-        self.screen.blit(self.player.image, self.player.rect)
         # draw score
         self.drawText(str(self.score), 22, WHITE, WIDTH / 2, 15)
         # *after* drawing everything, flip the display
@@ -134,6 +170,10 @@ class Game:
 
     def showStartScreen(self):
         # game splash/start screen
+        pg.mixer.music.load(path.join(sndFolder, "Yippee.wav"))
+        pg.mixer.music.play(loops=-1)
+        pg.mixer.music.set_volume(.3)
+
         self.screen.fill(LIGHTBLUE)
         self.drawText("Jumpy platformer", 48, WHITE, WIDTH / 2, HEIGHT / 4)
         self.drawText("Arrow keys to move, space to jump", 22, WHITE, WIDTH / 2, HEIGHT / 2)
@@ -144,12 +184,15 @@ class Game:
 
     def showGoScreen(self):
         # game over screen
+        pg.mixer.music.load(path.join(sndFolder, "Yippee.wav"))
+        pg.mixer.music.play(loops=-1)
+        pg.mixer.music.set_volume(.3)
         if not self.running:
             return
         self.screen.fill(LIGHTBLUE)
         self.drawText("Game Over", 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Score: "+ str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
-        self.drawText("Pres a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.drawText("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Press any key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
 
         if self.score > self.highscore:
             self.highscore = self.score

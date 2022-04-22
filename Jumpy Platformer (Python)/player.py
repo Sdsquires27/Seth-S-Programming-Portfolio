@@ -4,7 +4,9 @@ vec = pygame.math.Vector2
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
-        super(Player, self).__init__()
+        self._layer = PLAYER_LAYER
+        self.groups = game.allSprites
+        pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.walking = False
         self.jumping = False
@@ -55,6 +57,7 @@ class Player(pygame.sprite.Sprite):
         if hits and not self.jumping:
             self.jumping = True
             self.vel.y = -PLAYER_JUMP
+            self.game.jumpSnd.play()
 
     def jumpCut(self):
         if self.jumping:
@@ -109,3 +112,4 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.walkFramesL[self.currentFrame]
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
+        self.mask = pygame.mask.from_surface(self.image)

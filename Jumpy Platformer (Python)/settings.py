@@ -4,11 +4,22 @@ import random
 # set up asset folders
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
+sndFolder = os.path.join(gameFolder, "snd")
 
 HS_FILE = "highscore.txt"
 
 PLAYER_SPRITESHEET = "p1_spritesheet.png"
 ENEMY_SPRITESHEET = "enemies_spritesheet.png"
+
+# Game properties
+BOOST_POWER = 60
+POW_SPAWN_PCT = 7
+MOB_FREQ = 5000
+PLAYER_LAYER = 2
+PLATFORM_LAYER = 1
+POW_LAYER = 1
+MOB_LAYER = 2
+CLOUD_LAYER = 0
 
 # project properties
 WIDTH = 480
