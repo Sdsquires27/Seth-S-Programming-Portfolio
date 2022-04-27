@@ -65,6 +65,11 @@ class Game:
             p = Platform(*plat, self)
             self.allSprites.add(p)
             self.platforms.add(p)
+
+        for i in range(10):
+            c = Cloud(self)
+            c.rect.y += 500
+
         pg.mixer.music.load(path.join(sndFolder, "Happytune.wav"))
 
         g.run()
@@ -113,7 +118,11 @@ class Game:
 
         # if player reaches top 1 / 4 of screen
         if self.player.rect.top <= HEIGHT / 4:
+            if random.randrange(100) < 5:
+                Cloud(self)
             self.player.pos.y += max(abs(self.player.vel.y), 2)
+            for cloud in self.clouds:
+                cloud.rect.y += max(abs(self.player.vel.y / cloud.downScale), 2)
             for plat in self.platforms:
                 plat.rect.y += max(abs(self.player.vel.y), 2)
                 if plat.rect.top >= HEIGHT:

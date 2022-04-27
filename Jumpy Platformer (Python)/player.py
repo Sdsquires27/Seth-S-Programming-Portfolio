@@ -101,7 +101,14 @@ class Player(pygame.sprite.Sprite):
             self.lastUpdate = now
             self.image = self.standingImage
 
-        if self.walking:
+        if self.jumping:
+            self.lastUpdate = now
+            if self.vel.x > 0:
+                self.image = self.jumpFrameR
+            else:
+                self.image = self.jumpFrameL
+
+        elif self.walking:
             if now - self.lastUpdate > 50:
                 self.lastUpdate = now
                 self.currentFrame = (self.currentFrame + 1) % len(self.walkFramesR)
