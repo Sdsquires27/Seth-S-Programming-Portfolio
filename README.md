@@ -37,3 +37,10 @@ Jumpy platformer (Python):
 Requirements: Python installed, pygame installed
 
 This project was made with the help of a tutorial. I wanted to learn what I could about platformers without jumping into it with no assistance, and the tutorial I used was a huge help for that. I also tried to try my own things while making this, like using sprites different than the ones used in the tutorial to learn how to cut my own sprites. This helped me learn many important skills in pygame.
+
+
+Joust (Unity, C#)
+
+Requirements: Windows OS
+
+This game was made as part of a Game Jam with a team of four. Two of us worked on the code, while the other two worked on art and conceptual design. The theme of the Game Jam was to redesign an 80's game, allowing only six controls--four directions and two other inputs. We redesigned Joust as best we could, with the added mechanic of getting off of your mount. This game was really interesting to design, as the other coder and I had to design so much by ourselves. Since we only had our master project on one computer, one of us would design skeletons of scripts, without all of the classes that were used, while the other would implement the scripts into the game. This was a blast to create.
