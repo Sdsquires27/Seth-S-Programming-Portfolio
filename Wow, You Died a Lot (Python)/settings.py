@@ -1,15 +1,19 @@
 import os
 import random
+import pygame as pg
 
 # set up asset folders
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
 
+# project properties
 WIDTH = 1600
 HEIGHT = 900
 FPS = 60
 TITLE = "Platformer"
+FONT_NAME = "helvetica"
 
+JUMP = pg.K_SPACE
 
 # define game properties
 PLAYER_LAYER = 3
@@ -26,6 +30,7 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
 
 
 

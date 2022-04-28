@@ -2,6 +2,7 @@ import pygame
 from settings import *
 vec = pygame.math.Vector2
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
         self._layer = PLAYER_LAYER
@@ -13,10 +14,17 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.jumping = False
 
+        self.won = False
+        self.lifeData = []
+        self.lifeNum = 0
+        self.lifeData.append([])
+
         self.maxJumps = 2
         self.curJumps = 0
 
-        self.pos = vec(80, HEIGHT - 80)
+        self.spawnPos = vec(80, HEIGHT - 80)
+
+        self.pos = (self.spawnPos.x, self.spawnPos.y)
         self.rect.midbottom = self.pos
 
         self.vel = vec(0, 0)
@@ -35,6 +43,22 @@ class Player(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.y -= 2
         return hits
+
+    def die(self):
+        self.pos = (self.spawnPos.x, self.spawnPos.y)
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        self.lifeNum += 1
+        self.lifeData.append([])
+
+    def replayDeaths(self):
+        for i in range(len(self.lifeData)):
+            Ghost(self, i)
+
+    def win(self):
+        self.won = True
+        self.replayDeaths()
+        self.kill()
 
     def update(self):
         if self.isOnGround() and not self.jumping:
@@ -90,3 +114,31 @@ class Player(pygame.sprite.Sprite):
                         self.vel.y = 0
 
         self.rect.bottom = self.pos.y
+
+        self.lifeData[self.lifeNum].append((self.pos.x, self.pos.y))
+
+
+class Ghost(pygame.sprite.Sprite):
+    def __init__(self, player, num):
+        self._layer = PLAYER_LAYER
+        self.groups = player.game.allSprites, player.game.ghosts
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.player = player
+        self.game = player.game
+        self.image = self.game.playerImg
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.num = num
+        self.frame = 0
+        self.pos = self.player.lifeData[num][0]
+
+        self.rect.midbottom = self.pos
+
+    def update(self):
+        self.frame += 1
+        if self.frame < len(self.player.lifeData[self.num]) - 1:
+            self.pos = self.player.lifeData[self.num][self.frame]
+            self.rect.midbottom = self.pos
+
+        else:
+            self.kill()
