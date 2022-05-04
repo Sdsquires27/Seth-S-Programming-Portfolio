@@ -24,7 +24,6 @@ class PgButton(pg.sprite.Sprite):
         if self.rect.collidepoint(x, y):
             self.image = self.darkImage
 
-
     def click(self):
         x, y = pg.mouse.get_pos()
         if self.rect.collidepoint(x, y):

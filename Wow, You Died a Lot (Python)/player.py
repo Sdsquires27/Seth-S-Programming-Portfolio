@@ -9,8 +9,8 @@ class Player(pygame.sprite.Sprite):
         self.groups = game.allSprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
-        self.image = self.game.playerImg
-        self.image.set_colorkey(BLACK)
+        self.loadImages()
+        self.image = self.standingImage
         self.rect = self.image.get_rect()
         self.jumping = False
 
@@ -30,6 +30,11 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
 
         self.acc = vec(0, 0)
+
+    def loadImages(self):
+        self.standingImage = self.game.playerSpritesheet.getImage(220, 0, 55, 80)
+        self.standingImage.set_colorkey(BLACK)
+
 
     def jump(self):
         # jump only if standing on a platform
