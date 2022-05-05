@@ -36,29 +36,29 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def loadImages(self):
-        self.standingImage = self.game.playerSpritesheet.getImage(220, 0, 55, 75)
-        self.standingImage.set_colorkey(BLACK)
+        self.standingImage = self.game.playerSpritesheet.getImage(220, 0, 55, 80)
+        # self.standingImage.set_colorkey(BLACK)
 
         self.walkImagesR = [
-            self.game.playerSpritesheet.getImage(0, 0, 55, 75),
-            self.game.playerSpritesheet.getImage(55, 0, 55, 75),
-            self.game.playerSpritesheet.getImage(0, 80, 55, 75),
-            self.game.playerSpritesheet.getImage(55, 80, 55, 75),
-            self.game.playerSpritesheet.getImage(165, 80, 55, 75),
-            self.game.playerSpritesheet.getImage(220, 0, 55, 75),
-            self.game.playerSpritesheet.getImage(55, 80, 55, 75),
-            self.game.playerSpritesheet.getImage(0, 80, 55, 75),
-            self.game.playerSpritesheet.getImage(55, 0, 55, 75),
-            self.game.playerSpritesheet.getImage(0, 0, 55, 75),
-            self.game.playerSpritesheet.getImage(220, 0, 55, 75)
+            self.game.playerSpritesheet.getImage(0, 0, 55, 80),
+            self.game.playerSpritesheet.getImage(55, 0, 55, 80),
+            self.game.playerSpritesheet.getImage(0, 80, 55, 80),
+            self.game.playerSpritesheet.getImage(55, 80, 55, 80),
+            self.game.playerSpritesheet.getImage(165, 80, 55, 80),
+            self.game.playerSpritesheet.getImage(220, 0, 55, 80),
+            self.game.playerSpritesheet.getImage(55, 80, 55, 80),
+            self.game.playerSpritesheet.getImage(0, 80, 55, 80),
+            self.game.playerSpritesheet.getImage(55, 0, 55, 80),
+            self.game.playerSpritesheet.getImage(0, 0, 55, 80),
+            self.game.playerSpritesheet.getImage(220, 0, 55, 80)
         ]
         self.walkImagesL = []
         for frame in self.walkImagesR:
-            frame.set_colorkey(BLACK)
+            # frame.set_colorkey(BLACK)
             self.walkImagesL.append(pygame.transform.flip(frame, True, False))
 
         self.jumpFrameR = self.game.playerSpritesheet.getImage(165, 160, 55, 75)
-        self.jumpFrameR.set_colorkey(BLACK)
+        # self.jumpFrameR.set_colorkey(BLACK)
 
         self.jumpFrameL = pygame.transform.flip(self.jumpFrameR, True, False)
 
@@ -80,14 +80,19 @@ class Player(pygame.sprite.Sprite):
         self.pos = (self.spawnPos.x, self.spawnPos.y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-        self.lifeNum += 1
         self.lifeData.append([])
+        self.lifeNum += 1
+        self.lifeData[self.lifeNum].append([])
+        for enemy in self.game.enemies:
+            enemy.reset()
 
     def replayDeaths(self):
         for i in range(len(self.lifeData)):
             Ghost(self, i)
 
     def win(self):
+        for enemy in self.game.enemies:
+            enemy.reset()
         self.won = True
         self.replayDeaths()
         self.kill()
@@ -148,11 +153,13 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.bottom = self.pos.y
 
+        self.lifeData[self.lifeNum][len(self.lifeData[self.lifeNum]) - 1].append(self.animType)
+        self.lifeData[self.lifeNum][len(self.lifeData[self.lifeNum]) - 1].append(self.currentFrame)
         self.lifeData[self.lifeNum][len(self.lifeData[self.lifeNum]) - 1].append((self.pos.x, self.pos.y))
         self.lifeData[self.lifeNum].append([])
 
     def animate(self):
-        animType = "s"
+        self.animType = "s"
         now = pygame.time.get_ticks()
         if self.vel.x != 0:
             self.walking = True
@@ -166,17 +173,17 @@ class Player(pygame.sprite.Sprite):
         if self.jumping:
             self.lastupdate = now
             if self.vel.x > 0:
-                animType = "jr"
+                self.animType = "jr"
                 self.image = self.jumpFrameR
             else:
-                animType = "jl"
+                self.animType = "jl"
                 self.image = self.jumpFrameL
 
         elif self.walking:
             if self.vel.x > 0:
-                animType = "wr"
+                self.animType = "wr"
             else:
-                animType = "wl"
+                self.animType = "wl"
 
             if now - self.lastUpdate > 50:
                 self.lastUpdate = now
@@ -188,8 +195,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.walkImagesL[self.currentFrame]
                 self.rect = self.image.get_rect()
                 self.rect.bottom = bottom
-        self.lifeData[self.lifeNum][len(self.lifeData[self.lifeNum]) - 1].append(animType)
-        self.lifeData[self.lifeNum][len(self.lifeData[self.lifeNum]) - 1].append(self.currentFrame)
+
 
 class Ghost(pygame.sprite.Sprite):
     def __init__(self, player, num):
@@ -199,7 +205,6 @@ class Ghost(pygame.sprite.Sprite):
         self.player = player
         self.game = player.game
         self.image = self.player.standingImage
-        self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.num = num
         self.frame = 0

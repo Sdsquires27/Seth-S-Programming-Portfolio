@@ -33,12 +33,13 @@ class Game:
         self.dir = os.path.dirname(__file__)
 
         self.playerSpritesheet = Spritesheet(os.path.join(imgFolder, PLAYER_SPRITESHEET))
+        self.enemySpritesheet = Spritesheet(os.path.join(imgFolder, ENEMY_SPRITESHEET))
 
         self.buttonImages = []
         self.buttonImages.append(pg.image.load(os.path.join(imgFolder, "button1.jpg")).convert())
         self.buttonImages.append(pg.image.load(os.path.join(imgFolder, "button2.jpg")).convert())
 
-        with open(os.path.join(self.dir, LEVEL_FILE), "w") as f:
+        with open(os.path.join(self.dir, LEVEL_FILE), "r") as f:
             try:
                 self.unlockedLevel = int(f.read())
             except:
@@ -52,6 +53,7 @@ class Game:
         self.goal = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
         self.ui = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
 
         # initialize player
         self.player = Player(self)
@@ -98,6 +100,7 @@ class Game:
 
                 # if you have reached a new highest level, increase unlocked levels
                 if self.curLev > self.unlockedLevel:
+                    print("new level unlocked")
                     self.unlockedLevel = self.curLev
                     with open(os.path.join(self.dir, LEVEL_FILE), "w") as f:
                         f.write(str(self.unlockedLevel))
@@ -209,8 +212,8 @@ class Game:
     def showStartScreen(self):
         # game splash/start screen
         self.screen.fill(BLUE)
-        self.drawText("Jumpy platformer", 60, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Arrow keys to move, space or z to jump, c to dash", 40, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Wow, you died a lot", 60, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.drawText("Arrow keys to move, space to jump. Press twice to double jump", 40, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("Press any key to start", 40, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
         pg.display.flip()
 
@@ -296,7 +299,3 @@ class Game:
 
             # display
             pg.display.flip()
-
-    def showGoScreen(self):
-        # game over screen
-        pass

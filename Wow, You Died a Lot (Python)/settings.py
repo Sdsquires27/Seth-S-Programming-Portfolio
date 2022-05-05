@@ -14,6 +14,7 @@ FONT_NAME = "varino"
 LEVEL_FILE = "level.txt"
 
 PLAYER_SPRITESHEET = os.path.join(imgFolder, "player.png")
+ENEMY_SPRITESHEET = os.path.join(imgFolder, "enemies_spritesheet.png")
 
 JUMP = pg.K_SPACE
 
@@ -25,6 +26,7 @@ PLAYER_GRAV = 1.5
 PLAYER_JUMP = 23
 
 PLATFORM_LAYER = 2
+ENEMY_LAYER = 3
 
 UI_LAYER = 3
 
@@ -35,3 +37,4 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+LIGHTBLUE = (0, 100, 100)
