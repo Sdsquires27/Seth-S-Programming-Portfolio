@@ -39,6 +39,13 @@ Requirements: Python installed, pygame installed
 This project was made with the help of a tutorial. I wanted to learn what I could about platformers without jumping into it with no assistance, and the tutorial I used was a huge help for that. I also tried to try my own things while making this, like using sprites different than the ones used in the tutorial to learn how to cut my own sprites. This helped me learn many important skills in pygame.
 
 
+Wow, you died a lot (Python):
+
+Requirements: Python installed, pygame installed
+
+i made this project after the Jumpy platformer, using the mechanics there as a starter for what I made. I didn't employ any help on this project, though, and built it entirely on my own. The main mechanic I focused on was the replay mechanic, making it the aim of the project. The levels are pretty basic--I didn't want to spend too much time on them as I had other projects to make (also, if I had made more levels, it would have become a rage platformer very quickly. I'm already pushing it with the last one).
+
+
 Joust (Unity, C#)
 
 Requirements: Windows OS
