@@ -7,7 +7,7 @@ Oregon Trail (Python):
 
 Requirements: Python installed on computer.
 
-This was the first real programming project I worked on without lots of help or supervision. Our goal was to make the Oregon Trail, and I worked with a partner to accomplish it. I focused on the code, while he focused on the concept, art, and helping around wherever necessary. We honestly got a lot done--our project was the most complete in the class--and it started the long train of independent projects that follow.
+This was the first real programming project I worked on without lots of help or supervision. Our goal was to make the Oregon Trail, and I worked with a partner to accomplish it. I focused on the code, while he focused on the concept, art, and helping around wherever necessary. We honestly got a lot done--our project was the most complete in the class, and we've got a couple of fun easter eggs in there as well--and it started the long train of independent projects that follow.
 
 
 Chucklehead - Terminal (Python):
