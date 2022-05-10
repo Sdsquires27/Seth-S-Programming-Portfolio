@@ -44,7 +44,9 @@ LEVELS = [
         (0, 0, WIDTH, 40, "P"),
         (WIDTH - 40, 0, 40, HEIGHT, "P"),
         (WIDTH / 2, HEIGHT - 190, 100, 80, "O"),
-        (WIDTH * 3 / 4, HEIGHT - 190, 100, 40, "G")
+        (WIDTH * 3 / 4, HEIGHT - 190, 100, 40, "G"),
+        (500, WIDTH - 500, HEIGHT - 100, 6, "M"),
+        (WIDTH - 500, 500, HEIGHT - 100, 6, "M")
     ],
 
     [

@@ -13,6 +13,11 @@ class Enemy(pg.sprite.Sprite):
 
         self.xMax = xMax
         self.xMin = xMin
+        self.start = xMin
+        if self.xMin > self.xMax:
+            var = self.xMin
+            self.xMin = self.xMax
+            self.xMax = var
 
         self.flyFrames = [self.game.enemySpritesheet.getImage(0, 32, 72, 36),
                           self.game.enemySpritesheet.getImage(0, 0, 75, 31)]
@@ -23,7 +28,8 @@ class Enemy(pg.sprite.Sprite):
 
         self.image = self.flyFrames[0]
         self.rect = self.image.get_rect()
-        self.rect.centerx = xMin
+        self.rect.centerx = self.start
+
         self.vx = speed
 
         self.y = y
@@ -35,7 +41,7 @@ class Enemy(pg.sprite.Sprite):
         self.lastUpdate = 0
 
     def reset(self):
-        self.rect.center = (self.xMin, self.y)
+        self.rect.center = (self.start, self.y)
         self.vx = abs(self.vx)
 
 
