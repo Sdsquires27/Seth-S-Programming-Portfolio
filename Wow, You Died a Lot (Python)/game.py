@@ -39,6 +39,8 @@ class Game:
         self.buttonImages.append(pg.image.load(os.path.join(imgFolder, "button1.jpg")).convert())
         self.buttonImages.append(pg.image.load(os.path.join(imgFolder, "button2.jpg")).convert())
 
+        self.doorImage = pg.image.load(os.path.join(imgFolder, "Door.png")).convert()
+
         with open(os.path.join(self.dir, LEVEL_FILE), "r") as f:
             try:
                 self.unlockedLevel = int(f.read())
@@ -269,7 +271,8 @@ class Game:
             ui.kill()
 
         # make buttons
-        Button(self, WIDTH / 4, HEIGHT * 2 / 3, self.nextLevel)
+        if self.curLev + 1 < len(LEVELS):
+            Button(self, WIDTH / 4, HEIGHT * 2 / 3, self.nextLevel)
         Button(self, WIDTH * 3 / 4, HEIGHT * 2 / 3, self.showMenuScreen)
 
         pg.display.flip()
@@ -294,7 +297,8 @@ class Game:
             # draw text
             self.drawText("Level Complete!", 48, WHITE, WIDTH / 2, HEIGHT / 4)
             self.drawText("Deaths: " + str(self.player.lifeNum), 32, WHITE, WIDTH / 2, HEIGHT / 2)
-            self.drawText("Next level", 40, BLACK, WIDTH / 4, HEIGHT * 2 / 3 - 10)
+            if self.curLev + 1 < len(LEVELS):
+                self.drawText("Next level", 40, BLACK, WIDTH / 4, HEIGHT * 2 / 3 - 10)
             self.drawText("Level select", 40, BLACK, WIDTH * 3 / 4, HEIGHT * 2 / 3 - 10)
 
             # display
