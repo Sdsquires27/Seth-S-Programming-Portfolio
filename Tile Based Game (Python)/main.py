@@ -4,6 +4,7 @@ import random
 from os import path
 from player import *
 from wall import *
+from tilemap import *
 
 class Game():
     def __init__(self):
@@ -20,20 +21,13 @@ class Game():
     def loadData(self):
         self.allSprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
-
-        self.mapData = []
-        with open(path.join(gameFolder, "map.txt"), "rt") as f:
-            for line in f:
-                self.mapData.append(line)
-
-
-        # initialize player
-        self.playerImg = pg.image.load(os.path.join(imgFolder, "Vessel.png")).convert()
+        self.map = Map(path.join(gameFolder, "map.txt"))
+        self.playerImg = pg.image.load(os.path.join(imgFolder, "manBlue_silencer.png")).convert()
 
     def new(self):
         # initialize the game
 
-        for row, tiles in enumerate(self.mapData):
+        for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == "1":
                     Wall(self, col, row)
@@ -41,13 +35,15 @@ class Game():
                     self.player = Player(self, col, row)
                     self.allSprites.add(self.player)
 
+        self.camera = Camera(self.map.width, self.map.height)
+
         g.run()
 
     def run(self):
         # Game loop
         self.playing = True
         while self.playing:
-            self.clock.tick(FPS)
+            self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
@@ -64,15 +60,6 @@ class Game():
                 if self.playing:
                     self.playing = False
                 self.running = False
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
-                    self.player.move(dx=-1)
-                if event.key == pg.K_RIGHT:
-                    self.player.move(dx=1)
-                if event.key == pg.K_UP:
-                    self.player.move(dy=-1)
-                if event.key == pg.K_DOWN:
-                    self.player.move(dy=1)
 
     def drawGrid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -84,7 +71,9 @@ class Game():
     def draw(self):
         # game loop - draw
         self.screen.fill(BGCOLOR)
-        self.allSprites.draw(self.screen)
+        self.camera.update(self.player)
+        for sprite in self.allSprites:
+            self.screen.blit(sprite.image, self.camera.apply(sprite))
         self.drawGrid()
         # *after* drawing everything, flip the display
         pg.display.flip()
