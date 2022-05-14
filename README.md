@@ -57,3 +57,10 @@ Wow, you died a lot (Python):
 Requirements: Python installed, pygame installed
 
 i made this project after the Jumpy platformer, using the mechanics there as a starter for what I made. I didn't employ any help on this project, though, and built it entirely on my own. The main mechanic I focused on was the replay mechanic, making it the aim of the project. The levels are pretty basic--I didn't want to spend too much time on them as I had other projects to make (also, if I had made more levels, it would have become a rage platformer very quickly. I'm already pushing it with the last one).
+
+
+Those Who Were Here (Python):
+
+Requirements: Python installed, pygame installed
+
+This project is to 'Wow you died a lot' as that game is to the Jumpy Platformer. I took the features and mechanics that I had created in the previous game and took them a step further, creating a game with a feel that was entirely different. Now, the ghost of yourself hunted you down, both hurting and helping you as you tried to solve puzzles around them and there were new mechanics and features, like tilemapping, boxes, buttons, and goal conditions. Again, this is limited in levels due to time constraints, but I think the ones that I have are pretty well designed.
