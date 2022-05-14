@@ -183,7 +183,7 @@ class Game():
         # game splash/start screen
         self.screen.fill(GREY)
         self.drawText("Those Who Were Here", 60, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.drawText("Arrow keys to move, up to jump. Press twice to double jump. Space to interact.", 30, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.drawText("Arrow keys to move, up to jump. Press twice to double jump. Space to interact. Z to reset the level completely", 30, WHITE, WIDTH / 2, HEIGHT / 2)
         self.drawText("This place is haunted by the ghosts who came before. They will kill you if you touch them, but they can help you, too.", 30, WHITE, WIDTH / 2, HEIGHT * 4 / 6)
         self.drawText("Press any key to start", 40, WHITE, WIDTH / 2, HEIGHT * 5 / 6)
         pg.display.flip()
