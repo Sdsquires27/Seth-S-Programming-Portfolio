@@ -62,7 +62,6 @@ class Player(pygame.sprite.Sprite):
 
         self.jumpFrameL = pygame.transform.flip(self.jumpFrameR, True, False)
 
-
     def jump(self):
         # jump only if standing on a platform
         if self.curJumps > 0:
