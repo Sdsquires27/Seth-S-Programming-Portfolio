@@ -4,6 +4,7 @@ import random
 # set up asset folders
 gameFolder = os.path.dirname(__file__)
 imgFolder = os.path.join(gameFolder, "img")
+sndFolder = os.path.join(gameFolder, "snd")
 lvlFolder = os.path.join(gameFolder, "levels")
 
 PLAYER_SPRITESHEET = os.path.join(imgFolder, "player.png")

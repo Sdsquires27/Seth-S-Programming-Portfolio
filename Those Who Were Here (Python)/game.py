@@ -38,6 +38,10 @@ class Game():
         self.buttonImages = [pg.image.load(os.path.join(imgFolder, "button.jpg")).convert(),
                              pg.image.load(os.path.join(imgFolder, "selButton.jpg")).convert()]
 
+        pg.mixer.music.load(os.path.join(sndFolder, "MattOglseby - 1.ogg"))
+        pg.mixer.music.set_volume(1)
+        pg.mixer.music.play(loops=-1)
+
         self.map = Map(lvlFolder)
         self.curLvl = 0
 
