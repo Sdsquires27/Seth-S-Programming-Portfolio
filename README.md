@@ -9,6 +9,11 @@ Requirements: Python installed on computer.
 
 This was the first real programming project I worked on without lots of help or supervision. Our goal was to make the Oregon Trail, and I worked with a partner to accomplish it. I focused on the code, while he focused on the concept, art, and helping around wherever necessary. We honestly got a lot done--our project was the most complete in the class, and we've got a couple of fun easter eggs in there as well--and it started the long train of independent projects that follow.
 
+Strikebreaker (Unity, C#):
+
+Requirements: Windows OS
+
+This project served the same purpose as the above Oregon Trail, my first programming project without much help or supervision. I'll be honest, I still didn't completely understand what I was doing, but I think that this shoes the immense amount of learning I went through before making fight only a month or so later, or Vessel a couple of months later. I also think that this project has a lot of spirit--I had plenty of fun making it, even if I struggled with even simple things.
 
 Chucklehead - Terminal (Python):
 
