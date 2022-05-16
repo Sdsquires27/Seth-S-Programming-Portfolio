@@ -69,3 +69,10 @@ Those Who Were Here (Python):
 Requirements: Python installed, pygame installed
 
 This project is to 'Wow you died a lot' as that game is to the Jumpy Platformer. I took the features and mechanics that I had created in the previous game and took them a step further, creating a game with a feel that was entirely different. Now, the ghost of yourself hunted you down, both hurting and helping you as you tried to solve puzzles around them and there were new mechanics and features, like tilemapping, boxes, buttons, and goal conditions. Again, this is limited in levels due to time constraints, but I think the ones that I have are pretty well designed.
+
+
+Tile Based Game (Python):
+
+Requirements: Python, pygame, pytmx, itertools all installed
+
+I made this project with the help of tutorial as well, which introduced a lot of new concepts to me in python, like tiling levels. I used some of those in the above project, but not the extent that they were used here. Because of this, I learned a lot from this tutorial to be used in the future.
