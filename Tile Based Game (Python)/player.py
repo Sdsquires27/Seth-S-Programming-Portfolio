@@ -2,13 +2,13 @@ import pygame
 import pygame as pg
 from settings import *
 from tilemap import *
-from random import uniform
+from random import uniform, randint, choice
 vec = pygame.math.Vector2
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
-        print("I exist")
+        self._layer = PLAYER_LAYER
         super(Player, self).__init__()
         self.game = game
         self.image = pygame.transform.scale(game.playerImg, (TILESIZE, TILESIZE))
@@ -21,7 +21,9 @@ class Player(pygame.sprite.Sprite):
 
         self.vel = vec(0, 0)
         self.pos = vec(x, y)
+        self.rect.center = self.pos
         self.rot = 0
+        self.weapon = "pistol"
 
     def getKeys(self):
         self.rotSpeed = 0
@@ -36,13 +38,20 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)
         if keys[pygame.K_SPACE]:
-            now = pg.time.get_ticks()
-            if now - self.lastShot > BULLET_RATE:
-                self.lastShot = now
-                dir = vec(1, 0).rotate(-self.rot)
-                bulletPos = self.pos + BARREL_OFFSET.rotate(-self.rot)
-                Bullet(self.game, bulletPos, dir)
-                self.vel = vec(-KICKBACK, 0).rotate(-self.rot)
+            self.shoot()
+
+    def shoot(self):
+        now = pg.time.get_ticks()
+        if now - self.lastShot > WEAPONS[self.weapon]["rate"]:
+            self.lastShot = now
+            dir = vec(1, 0).rotate(-self.rot)
+            bulletPos = self.pos + BARREL_OFFSET.rotate(-self.rot)
+            self.vel = vec(-WEAPONS[self.weapon]["kickback"], 0).rotate(-self.rot)
+            for i in range(WEAPONS[self.weapon]["count"]):
+                spread = uniform(-WEAPONS[self.weapon]["spread"], WEAPONS[self.weapon]["spread"])
+                Bullet(self.game, bulletPos, dir.rotate(spread))
+                choice(self.game.weaponSounds[self.weapon]).play()
+            MuzzleFlash(self.game, bulletPos)
 
     def update(self):
         self.getKeys()
@@ -61,18 +70,22 @@ class Player(pygame.sprite.Sprite):
         collideWithWalls(self, self.game.walls, "y")
         self.rect.center = self.hitRect.center
 
+    def addHealth(self, amount):
+        self.health += amount
+        if self.health > PLAYER_HEALTH:
+            self.health = PLAYER_HEALTH
 
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, dir):
+        self._layer = BULLET_LAYER
         self.groups = game.allSprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)
-        self.image = game.bulletImg
+        self.image = game.bulletImages[WEAPONS[game.player.weapon]["size"]]
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-        spread = uniform(-GUN_SPREAD, GUN_SPREAD)
-        self.vel = dir.rotate(spread) * BULLET_SPEED
+        self.vel = dir * WEAPONS[game.player.weapon]["speed"]
         self.spawnTime = pg.time.get_ticks()
         self.game = game
 
@@ -82,5 +95,22 @@ class Bullet(pg.sprite.Sprite):
         if pg.sprite.spritecollideany(self, self.game.walls):
             self.kill()
 
-        if pg.time.get_ticks() - self.spawnTime > BULLET_LIFE:
+        if pg.time.get_ticks() - self.spawnTime > WEAPONS[self.game.player.weapon]["lifetime"]:
+            self.kill()
+
+class MuzzleFlash(pg.sprite.Sprite):
+    def __init__(self, game, pos):
+        self._layer = EFFECTS_LAYER
+        self.groups = game.allSprites
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        size = randint(20, 50)
+        self.image = pg.transform.scale(choice(game.gunFlashes), (size, size))
+        self.rect = self.image.get_rect()
+        self.pos = pos
+        self.rect.center = pos
+        self.spawnTime = pg.time.get_ticks()
+
+    def update(self):
+        if pg.time.get_ticks() - self.spawnTime > FLASH_DURATION:
             self.kill()

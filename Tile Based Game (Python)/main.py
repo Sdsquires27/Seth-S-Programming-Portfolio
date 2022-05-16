@@ -6,6 +6,7 @@ from player import *
 from wall import *
 from tilemap import *
 from mobs import *
+from item import *
 
 # HUD functions
 def drawPlayerHealth(surf, x, y, pct):
@@ -38,10 +39,15 @@ class Game():
         pg.key.set_repeat(500, 100)
 
     def loadData(self):
-        self.allSprites = pygame.sprite.Group()
+        self.allSprites = pygame.sprite.LayeredUpdates()
         self.mobs = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
+
+        self.titleFont = path.join(imgFolder, "ZOMBIE.TTF")
+        self.dimScreen = pg.Surface(self.screen.get_size()).convert_alpha()
+        self.dimScreen.fill((0, 0, 0, 180))
 
         self.map = TiledMap(path.join(mapFolder, "level1.tmx"))
         self.mapImg = self.map.makeMap()
@@ -49,10 +55,47 @@ class Game():
 
         self.playerImg = pg.image.load(os.path.join(imgFolder, "manBlue_silencer.png")).convert()
         self.mobImg = pg.image.load(os.path.join(imgFolder, MOB_IMAGE)).convert()
-        self.bulletImg = pg.image.load(os.path.join(imgFolder, BULLET_IMG)).convert()
+        self.bulletImages = {}
+        self.bulletImages["lg"] = pg.image.load(os.path.join(imgFolder, BULLET_IMG)).convert()
+        self.bulletImages["sm"] = pg.transform.scale(self.bulletImages["lg"], (10, 10))
+
+        self.splat = pg.image.load(path.join(imgFolder, SPLAT)).convert_alpha()
+        self.splat = pg.transform.scale(self.splat, (64, 64))
+
+        self.gunFlashes = []
+        for img in MUZZLE_FLASHES:
+            self.gunFlashes.append(pg.image.load(path.join(imgFolder, img)).convert_alpha())
+
+        self.itemImages = {}
+        for item in ITEM_IMAGES:
+            self.itemImages[item] = pg.image.load(path.join(imgFolder, ITEM_IMAGES[item])).convert_alpha()
 
         self.wallImg = pg.image.load(os.path.join(imgFolder, WALL_IMG)).convert()
         self.wallImg = pg.transform.scale(self.wallImg, (TILESIZE, TILESIZE))
+
+        # sounds
+        pg.mixer.music.load(path.join(sndFolder, BG_MUSIC))
+        self.effectSounds = {}
+        for type in EFFECTS_SOUNDS:
+            self.effectSounds[type] = pg.mixer.Sound(path.join(sndFolder, EFFECTS_SOUNDS[type]))
+        self.weaponSounds = {}
+        for weapon in WEAPON_SOUNDS:
+            self.weaponSounds[weapon] = []
+            for snd in WEAPON_SOUNDS[weapon]:
+                s = pg.mixer.Sound(path.join(sndFolder, snd))
+                s.set_volume(0.3)
+                self.weaponSounds[weapon].append(s)
+        self.zombieMoanSounds = []
+        for snd in ZOMBIE_MOAN_SOUNDS:
+            s = pg.mixer.Sound(path.join(sndFolder, snd))
+            s.set_volume(0.2)
+            self.zombieMoanSounds.append(s)
+        self.playerHitSounds = []
+        for snd in PLAYER_HIT_SOUNDS:
+            self.playerHitSounds.append(pg.mixer.Sound(path.join(sndFolder, snd)))
+        self.zombieHitSounds = []
+        for snd in ZOMBIE_HIT_SOUNDS:
+            self.zombieHitSounds.append(pg.mixer.Sound(path.join(sndFolder, snd)))
 
     def new(self):
         # initialize the game
@@ -68,27 +111,42 @@ class Game():
         #             self.allSprites.add(self.player)
 
         for tileObject in self.map.tmxdata.objects:
+            objCenter = vec(tileObject.x + tileObject.width / 2, tileObject.y + tileObject.height / 2)
             if tileObject.name == "player":
-                self.player = Player(self, tileObject.x, tileObject.y)
+                self.player = Player(self, objCenter.x, objCenter.y)
                 self.allSprites.add(self.player)
             if tileObject.name == "wall":
                 Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
             if tileObject.name == "zombie":
-                 Mob(self, tileObject.x, tileObject.y)
+                 Mob(self, objCenter.x, objCenter.y)
+            if tileObject.name in ["health"]:
+                Item(self, objCenter, tileObject.name)
+
 
         self.camera = Camera(self.map.width, self.map.height)
         self.drawDebug = False
+        self.paused = False
+        self.effectSounds["level_start"].play()
 
         g.run()
 
     def run(self):
         # Game loop
         self.playing = True
+        pg.mixer.music.play(loops=-1)
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
-            self.update()
+            if not self.paused:
+                self.update()
             self.draw()
+
+    def drawText(self, text, fontname, size, color, x, y):
+        font = pygame.font.Font(fontname, size)
+        textSurface = font.render(text, True, color)
+        textRect = textSurface.get_rect()
+        textRect.midtop = (x, y)
+        self.screen.blit(textSurface, textRect)
 
     def update(self):
         # Game Loop - Update
@@ -97,6 +155,8 @@ class Game():
 
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collideHitRecT)
         for hit in hits:
+            if random.random() < 0.7:
+                choice(self.playerHitSounds).play()
             self.player.health -= MOB_DAMAGE
             hit.vel = vec(0, 0)
             if self.player.health <= 0:
@@ -104,9 +164,16 @@ class Game():
         if hits:
             self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
 
+        hits = pg.sprite.spritecollide(self.player, self.items, False)
+        for hit in hits:
+            if hit.type == "health" and self.player.health < PLAYER_HEALTH:
+                hit.kill()
+                self.effectSounds["health_up"].play()
+                self.player.addHealth(HEALTH_PACK_AMOUNT)
+
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
-            hit.health -= BULLET_DMG
+            hit.health -= WEAPONS[self.player.weapon]["damage"]
             hit.vel = vec(0, 0)
 
     def events(self):
@@ -120,6 +187,8 @@ class Game():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_h:
                     self.drawDebug = not self.drawDebug
+                if event.key == pg.K_p:
+                    self.paused = not self.paused
 
     def drawGrid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -148,6 +217,9 @@ class Game():
         # HUD functions
         drawPlayerHealth(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         # *after* drawing everything, flip the display
+        if self.paused:
+            self.screen.blit(self.dimScreen, (0, 0))
+            self.drawText("Paused", self.titleFont, 105, RED, WIDTH / 2, HEIGHT / 2)
         pg.display.flip()
 
     def showStartScreen(self):
