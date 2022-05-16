@@ -3,6 +3,7 @@ import pygame as pg
 from settings import *
 from tilemap import *
 from random import uniform, randint, choice
+from itertools import chain
 vec = pygame.math.Vector2
 
 
@@ -24,6 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.pos
         self.rot = 0
         self.weapon = "pistol"
+        self.damaged = False
 
     def getKeys(self):
         self.rotSpeed = 0
@@ -49,15 +51,28 @@ class Player(pygame.sprite.Sprite):
             self.vel = vec(-WEAPONS[self.weapon]["kickback"], 0).rotate(-self.rot)
             for i in range(WEAPONS[self.weapon]["count"]):
                 spread = uniform(-WEAPONS[self.weapon]["spread"], WEAPONS[self.weapon]["spread"])
-                Bullet(self.game, bulletPos, dir.rotate(spread))
-                choice(self.game.weaponSounds[self.weapon]).play()
+                Bullet(self.game, bulletPos, dir.rotate(spread), WEAPONS[self.weapon]["damage"])
+                snd = choice(self.game.weaponSounds[self.weapon])
+                if snd.get_num_channels() > 2:
+                    snd.stop()
+                snd.play()
             MuzzleFlash(self.game, bulletPos)
+
+    def hit(self):
+        self.damaged = True
+        self.damageAlpha = chain(DAMAGE_ALPHA * 2)
 
     def update(self):
         self.getKeys()
 
         self.rot = (self.rot + self.rotSpeed + self.game.dt) % 360
         self.image = pygame.transform.rotate(self.game.playerImg, self.rot)
+        if self.damaged:
+            try:
+                self.image.fill((255, 0, 0, next(self.damageAlpha)), special_flags=pg.BLEND_RGBA_MULT)
+            except:
+                self.damaged = False
+
         self.image.set_colorkey(BLACK)
 
         self.rect = self.image.get_rect()
@@ -76,7 +91,7 @@ class Player(pygame.sprite.Sprite):
             self.health = PLAYER_HEALTH
 
 class Bullet(pg.sprite.Sprite):
-    def __init__(self, game, pos, dir):
+    def __init__(self, game, pos, dir, damage):
         self._layer = BULLET_LAYER
         self.groups = game.allSprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -85,9 +100,10 @@ class Bullet(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = vec(pos)
         self.rect.center = pos
-        self.vel = dir * WEAPONS[game.player.weapon]["speed"]
+        self.vel = dir * WEAPONS[game.player.weapon]["speed"] * uniform(0.9, 1.1)
         self.spawnTime = pg.time.get_ticks()
         self.game = game
+        self.damage = damage
 
     def update(self):
         self.pos += self.vel * self.game.dt

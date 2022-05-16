@@ -85,9 +85,11 @@ SPLAT = "splat green.png"
 MUZZLE_FLASHES = ["whitePuff15.png", "whitePuff16.png", "whitePuff17.png", "whitePuff18.png"]
 FLASH_DURATION = 40
 EFFECTS_LAYER = 4
+DAMAGE_ALPHA = [i for i in range(0, 255, 25)]
 
 # items
-ITEM_IMAGES = {"health": "health_pack.png"}
+ITEM_IMAGES = {"health": "health_pack.png",
+               "shotgun": "obj_shotgun.png"}
 ITEM_LAYER = 1
 HEALTH_PACK_AMOUNT = 30
 BOB_RANGE = 20
@@ -104,7 +106,8 @@ WEAPON_SOUNDS = {"pistol": ["pistol.wav"],
                  "shotgun": ["shotgun.wav"]}
 
 EFFECTS_SOUNDS = {'level_start': 'level_start.wav',
-                  'health_up': 'health_pack.wav'}
+                  'health_up': 'health_pack.wav',
+                  "gunPickup": "gun_pickup.wav"}
 
 def collideHitRecT(one, two):
     return one.hitRect.colliderect(two.rect)
