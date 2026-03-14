@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - canvas
+  - Player 1
+  - Player 2
+  - Player 3
+  - Player 4
+  - HpText
+  - ArmorText
+  - DmgText
+  - SpeedText
+  - LetterHolder
+  - SpellHolder
+  - Back Tilemap
+  - Grid
+  - PierceText
+  - Panel
+  - Unit Text
+  - ActionHolder
+  - Mat1
+  - Mat2
+  - Mat3
+  - Mat4
+  - DraftingType
+  - BuyingType
+  - HandicapOn
+  - NumPlayers
+  - NumRounds
+  - NumBonus
+  - FadeImage
+  - BuyTileHolder
+  - NumTiles
+  - SpellHolders
+  - UnitSpells
+  - SpellPlaceholder
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3968647267
+    locked: 0
+  - name: Level
+    uniqueID: 583855411
+    locked: 0
+  - name: Players
+    uniqueID: 4049528943
+    locked: 0
+  - name: Foreground
+    uniqueID: 2590916061
+    locked: 0

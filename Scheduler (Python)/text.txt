@@ -1,0 +1,4 @@
+Welcome to your scheduler!
+Your schedule for today has been displayed below.
+To change this schedule, create repeatable routines, view a different day, or view your overall schedule or routines,
+press the corresponding buttons on the left of the screen.

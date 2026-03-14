@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 85f5e09b25ca87c4293b9f3eb3e83895
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: a87003d53f962134490fd31328f664a4
+  - enabled: 1
+    path: Assets/Scenes/HowToPlay.unity
+    guid: 1f786b2309dc40c4294a178c1d831b68
+  - enabled: 1
+    path: Assets/Scenes/ModeSelect.unity
+    guid: da441e3dba0bce24b8736c82398ea7ff
+  - enabled: 1
+    path: Assets/Scenes/Phase One.unity
+    guid: 5c79e106540a0a2408f565db1f5dd787
+  - enabled: 1
+    path: Assets/Scenes/Phase Three.unity
+    guid: 51e6f0404eb982f489571efc5ebd4da0
+  - enabled: 1
+    path: Assets/Scenes/Phase Two.unity
+    guid: 59f8ce94712b51c49bec9bf1035e8b69
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 5b7508932a39090458271f6ad41f982c, type: 2}

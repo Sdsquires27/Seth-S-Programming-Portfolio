@@ -1,78 +1,40 @@
 # Seth-S-Programming-Portfolio
-This is my programming portfolio. This was created in my Python class in high school and has many of the projects I have worked on.
 
-Here is a brief overview of each project in this portfolio (listed in order of creation):
+This README includes a description of the different projects included in this portfolio in chronological order.
 
-Oregon Trail (Python):
+## Oregon Trail (Python):
 
-Requirements: Python installed on computer.
+*Requirements: Python* **(2022)**
 
-This was the first real programming project I worked on without lots of help or supervision. Our goal was to make the Oregon Trail, and I worked with a partner to accomplish it. I focused on the code, while he focused on the concept, art, and helping around wherever necessary. We honestly got a lot done--our project was the most complete in the class, and we've got a couple of fun easter eggs in there as well--and it started the long train of independent projects that follow.
+This project is included as an example of where I started as a programmer. It was my first project produced without supervision.
 
-Strikebreaker (Unity, C#):
+## Vessel (Unity, C#):
 
-Requirements: Windows OS
+*Requirements: Windows OS* **(2022)**
 
-This project served the same purpose as the above Oregon Trail, my first programming project without much help or supervision. I'll be honest, I still didn't completely understand what I was doing, but I think that this shoes the immense amount of learning I went through before making fight only a month or so later, or Vessel a couple of months later. I also think that this project has a lot of spirit--I had plenty of fun making it, even if I struggled with even simple things.
-
-Chucklehead - Terminal (Python):
-
-Requirements: Python installed on computer.
-
-One of the required projects in my Python class when we were first making object oriented programs was to create two card games--Blackjack, and one of our choice. I created war as my initial choice, and then went on to create this. This project, unlike the above version, is only within the Python terminal. Instead of art and graphics, it's all in ASCII and written out. This makes the game clunky, but I find it shows the growth that I've had as time has gone on. I started simply--though this project is a lot of lines of code, it's not filled with defining files and controlling card's movement, as I had no concept of how to do any of that yet.
+This game was created for an FBLA statewide competition, which I placed sixth in. The goal was to create a game based on older arcade games. Everything except for the sound, including the art and programming, was designed by myself. This was the biggest challenge with the project--coming up with concept, documentation, art, and creating the actual project by myself with no supervision whatsover. This was a super fun game to build though, and I was quite pleased with how it turned out. I'd recommend using a controller when playing it, though, as that's what it was built for.
 
 
-fight (Unity, C#):
+## Palace - Graphical (Python):
 
-Requirements: Windows OS
+*Requirements: Python, pygame* **(2022)**
 
-We made this game as a group in my Game Development class. Although some of it, such as the basic features and mechanics of the game, were designed as a whole, I was able to design a lot of my own things as well, like the particle effects and the overall feel of the game, as well as additional features. This is a project that would be fun to go back to and add more to.
+This is a graphical version of the card game Palace. It is built on top of a terminal based version of the game I had previously created, and is a demonstration of the things I had learned about python at this point.
 
+## Joust (Unity, C#)
 
-Vessel (Unity, C#):
+*Requirements: Windows OS* **(2023)**
 
-Requirements: Windows OS
+This game was made as part of a Game Jam with a team of four. Two of us worked on the code, while the other two worked on art and conceptual design. The theme of the Game Jam was to redesign an 80's game, allowing only six controls--four directions and two other inputs. We redesigned Joust as best we could, with the added mechanic of getting off of your mount. This game was really interesting to design, as the other coder and I had to design so much by ourselves. Since we only had our master project on one computer, one of us would design skeletons of scripts, without all of the classes that were used, while the other would implement the scripts into the game.
 
-This game was created for an FBLA statewide competition, which I placed sixth in. The goal was to create a game based on older arcade games. This project took weeks to build, especially because all of it was designed by myself. Everything except for the sound, including the art and programming, was designed by myself. This was the biggest challenge with the project--coming up with concept, documentation, art, and creating the actual project by myself with no supervision whatsover. This was a super fun game to build though, and I was quite pleased with how it turned out. I'd recommend using a controller when playing it, though, as that's what it was built for.
+## Colloquial Coliseum (Unity C#)
 
+*Requirements: Window OS* **(2023)**
 
-Chucklehead - Graphical (Python):
+This game was made for an FBLA statewide competition, which I placed fifth in. I went on to compete nationally in FBLA with this project, and it represents a culmination of the things I had learned about programming up to this point before I left for volunteer missionary service for two years. Creating it involved 
 
-Requirements: Python installed on computer. Pygame must be installed as well.
+## Scheduler (Python)
 
-I designed this game in Python, using pygame, in my Python class. I designed the game by myself, with minimal help or supervision. Chucklehead is a card game that I used to play with my family often, known more commonly as Karma. The rules are included in the title screen of the game. The main challenge I ran into while making this project was the process of selecting multiple cards at once. After trying multiple times to come up with different systems, I essentially had to restart in my process and control the card's selection to be controlled by a seperate entity. This project taught me a lot about graphical programming, especially without an editor like Unity, which I had grown used to.
+*Requirements: Python* **(2025)**
 
-
-Joust (Unity, C#)
-
-Requirements: Windows OS
-
-This game was made as part of a Game Jam with a team of four. Two of us worked on the code, while the other two worked on art and conceptual design. The theme of the Game Jam was to redesign an 80's game, allowing only six controls--four directions and two other inputs. We redesigned Joust as best we could, with the added mechanic of getting off of your mount. This game was really interesting to design, as the other coder and I had to design so much by ourselves. Since we only had our master project on one computer, one of us would design skeletons of scripts, without all of the classes that were used, while the other would implement the scripts into the game. This was a blast to create.
-
-
-Jumpy platformer (Python):
-
-Requirements: Python installed, pygame installed
-
-This project was made with the help of a tutorial. I wanted to learn what I could about platformers without jumping into it with no assistance, and the tutorial I used was a huge help for that. I also tried to try my own things while making this, like using sprites different than the ones used in the tutorial to learn how to cut my own sprites. This helped me learn many important skills in pygame.
-
-
-Wow, you died a lot (Python):
-
-Requirements: Python installed, pygame installed
-
-i made this project after the Jumpy platformer, using the mechanics there as a starter for what I made. I didn't employ any help on this project, though, and built it entirely on my own. The main mechanic I focused on was the replay mechanic, making it the aim of the project. The levels are pretty basic--I didn't want to spend too much time on them as I had other projects to make (also, if I had made more levels, it would have become a rage platformer very quickly. I'm already pushing it with the last one).
-
-
-Those Who Were Here (Python):
-
-Requirements: Python installed, pygame installed
-
-This project is to 'Wow you died a lot' as that game is to the Jumpy Platformer. I took the features and mechanics that I had created in the previous game and took them a step further, creating a game with a feel that was entirely different. Now, the ghost of yourself hunted you down, both hurting and helping you as you tried to solve puzzles around them and there were new mechanics and features, like tilemapping, boxes, buttons, and goal conditions. Again, this is limited in levels due to time constraints, but I think the ones that I have are pretty well designed.
-
-
-Tile Based Game (Python):
-
-Requirements: Python, pygame, pytmx, itertools all installed
-
-I made this project with the help of tutorial as well, which introduced a lot of new concepts to me in python, like tiling levels. I used some of those in the above project, but not the extent that they were used here. Because of this, I learned a lot from this tutorial to be used in the future.
+I grew frustrated with other scheduling apps and wanted to know more about tkinter, and so created this scheduling app while taking a Python course at BYU. It features the basic functionalities of a scheduling app laid out in a way that I preferred.

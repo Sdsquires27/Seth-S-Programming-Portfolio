@@ -1,0 +1,735 @@
+fileFormatVersion: 2
+guid: 83f4abef96e48ff47b7e4aeedff2ba21
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 901531571666859212
+    second: scrabbleLetters_0
+  - first:
+      213: -2630878402989121769
+    second: scrabbleLetters_1
+  - first:
+      213: 5818355358762642937
+    second: scrabbleLetters_2
+  - first:
+      213: -2122190924886513370
+    second: scrabbleLetters_3
+  - first:
+      213: 962967685392958320
+    second: scrabbleLetters_4
+  - first:
+      213: -7033834503847494619
+    second: scrabbleLetters_5
+  - first:
+      213: -4744940678929333866
+    second: scrabbleLetters_6
+  - first:
+      213: -1597775247465711068
+    second: scrabbleLetters_7
+  - first:
+      213: 1690239038603957129
+    second: scrabbleLetters_8
+  - first:
+      213: 3513008986973589162
+    second: scrabbleLetters_9
+  - first:
+      213: 4716158820523504080
+    second: scrabbleLetters_10
+  - first:
+      213: -8037024342095942395
+    second: scrabbleLetters_11
+  - first:
+      213: 2657664157432174763
+    second: scrabbleLetters_12
+  - first:
+      213: 7196148746435714275
+    second: scrabbleLetters_13
+  - first:
+      213: -4934011457503421381
+    second: scrabbleLetters_14
+  - first:
+      213: 8840095576011576754
+    second: scrabbleLetters_15
+  - first:
+      213: -8414097075003524560
+    second: scrabbleLetters_16
+  - first:
+      213: -1405929568894776127
+    second: scrabbleLetters_17
+  - first:
+      213: 5889331792809026165
+    second: scrabbleLetters_18
+  - first:
+      213: -8204017006200296872
+    second: scrabbleLetters_19
+  - first:
+      213: -9022999371861350081
+    second: scrabbleLetters_20
+  - first:
+      213: -6540582767101639659
+    second: scrabbleLetters_21
+  - first:
+      213: 4880330771489581500
+    second: scrabbleLetters_24
+  - first:
+      213: -8011696979462990195
+    second: scrabbleLetters_25
+  - first:
+      213: 4213465137751990631
+    second: scrabbleLetters_26
+  - first:
+      213: 7854582955126429274
+    second: scrabbleLetters_27
+  - first:
+      213: 8506628987712918817
+    second: scrabbleLetters_28
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 75
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: scrabbleLetters_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc4b00b1032e28c00800000000000000
+      internalID: 901531571666859212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71f169e080e3d7bd0800000000000000
+      internalID: -2630878402989121769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_2
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fda9003f53feb050800000000000000
+      internalID: 5818355358762642937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_3
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 629e49009967c82e0800000000000000
+      internalID: -2122190924886513370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_4
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 312
+        width: 62
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 073070202062d5d00800000000000000
+      internalID: 962967685392958320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_5
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52cb84d19ccc26e90800000000000000
+      internalID: -7033834503847494619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_6
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 312
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 691cd10a795962eb0800000000000000
+      internalID: -4744940678929333866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_7
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42af4e7b0ef83d9e0800000000000000
+      internalID: -1597775247465711068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_8
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9839c79437fe47710800000000000000
+      internalID: 1690239038603957129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_9
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaec0599f07b0c030800000000000000
+      internalID: 3513008986973589162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_10
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d1f0a1c579237140800000000000000
+      internalID: 4716158820523504080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_11
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 216
+        width: 62
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50d243e51f0c67090800000000000000
+      internalID: -8037024342095942395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_12
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba85804687be1e420800000000000000
+      internalID: 2657664157432174763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_13
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 216
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ec5c26782bddd360800000000000000
+      internalID: 7196148746435714275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_15
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 120
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b51cace6145eaa70800000000000000
+      internalID: 8840095576011576754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_16
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 120
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03af2c24a4f1b3b80800000000000000
+      internalID: -8414097075003524560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_17
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 120
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cc0fca81822d7ce0800000000000000
+      internalID: -1405929568894776127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_18
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 120
+        width: 64
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 572ebc2001c1bb150800000000000000
+      internalID: 5889331792809026165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_19
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 120
+        width: 62
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85aea26eff9752e80800000000000000
+      internalID: -8204017006200296872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_20
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 120
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f39a1af80edd7c280800000000000000
+      internalID: -9022999371861350081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_21
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 120
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5148dd670ae2b35a0800000000000000
+      internalID: -6540582767101639659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_24
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 24
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb96b05cafa6ab340800000000000000
+      internalID: 4880330771489581500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_25
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 24
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d86d9038b0cb0d090800000000000000
+      internalID: -8011696979462990195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_26
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 24
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7612339083c397a30800000000000000
+      internalID: 4213465137751990631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_27
+      rect:
+        serializedVersion: 2
+        x: 282
+        y: 24
+        width: 63
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5616231595110d60800000000000000
+      internalID: 7854582955126429274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scrabbleLetters_28
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 24
+        width: 62
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1255ba88efd9d0670800000000000000
+      internalID: 8506628987712918817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
