@@ -31,7 +31,7 @@ This game was made as part of a Game Jam with a team of four. Two of us worked o
 
 *Requirements: Window OS* **(2023)**
 
-This game was made for an FBLA statewide competition, which I placed fifth in. I went on to compete nationally in FBLA with this project, and it represents a culmination of the things I had learned about programming up to this point before I left for volunteer missionary service for two years. Creating it involved 
+This game was made for an FBLA statewide competition, which I placed fifth in. I went on to compete nationally in FBLA with this project, and it represents a culmination of the things I had learned about programming up to this point before I left for volunteer missionary service for two years.
 
 ## Scheduler (Python)
 
