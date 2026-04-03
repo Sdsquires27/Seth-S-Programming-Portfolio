@@ -1,6 +1,6 @@
 # Seth-S-Programming-Portfolio
 
-This README includes a description of the different projects included in this portfolio in chronological order.
+This repository contains some old projects I made. More robust descriptions can be found on [my website](sethsquires.com). This README includes a description of the different projects included in this portfolio in chronological order.
 
 ## Oregon Trail (Python):
 
